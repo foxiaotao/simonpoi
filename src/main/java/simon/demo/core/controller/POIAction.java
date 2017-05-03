@@ -56,8 +56,8 @@ import simon.demo.core.util.excel.AbstractExcelExportor;
 import simon.demo.core.util.fastexcel.RandFExcel;
 import simon.demo.core.util.fastexcel.RandFFutrueBean;
 import simon.demo.core.util.simonexcel.ExcelUtilMapping;
-import simon.demo.core.util.simonexcel.XxxExcelUtil;
-import simon.demo.core.util.simonexcel.XxxExcelUtilMapping;
+import simon.demo.core.util.simonexcel.XxxExcelAnnotationImpl;
+import simon.demo.core.util.simonexcel.XxxExcelMappingImpl;
 
 import com.alibaba.fastjson.JSONArray;
 
@@ -421,7 +421,7 @@ public class POIAction {
     			name = xlsName.split("\\.");
     			//验证文件格式
     			if("xls".equals(name[1])){
-    				XxxExcelUtilMapping excelutil = new XxxExcelUtilMapping();
+    				XxxExcelMappingImpl excelutil = new XxxExcelMappingImpl();
     				List entities = excelutil.setExcelInputStream(mf.getInputStream()).setPropertyMapping(pm).getEntities(RandFFutrueBean.class);
 //    				List entities = excelutil.setExcelInputStream(mf.getInputStream()).setImportStartRow(-1).setPropertyMapping(pm).getEntitiesHasNoHeader(1);
     				System.out.println(entities.size());
@@ -490,11 +490,11 @@ public class POIAction {
     			//验证文件格式
     			if("xls".equals(name[1]) || "xlsx".equals(name[1])){
     				//处理文件
-    				XxxExcelUtilMapping importUtil = new XxxExcelUtilMapping();
+    				XxxExcelMappingImpl importUtil = new XxxExcelMappingImpl();
     				List<RandFFutrueBean> entities = importUtil.setExcelInputStream(mf.getInputStream()).setPropertyMapping(pm).getEntities(RandFFutrueBean.class);
     				importUtil.closeWorkbook();
     				
-    				XxxExcelUtilMapping exportUtil = new XxxExcelUtilMapping();
+    				XxxExcelMappingImpl exportUtil = new XxxExcelMappingImpl();
     				exportUtil.setSheetName("pinci").setPropertyMapping(pm).createExcel(entities,RandFFutrueBean.class);
     				
     				String fileName="pinci.xlsx";  
@@ -550,7 +550,7 @@ public class POIAction {
     			//验证文件格式
     			if("xls".equals(name[1]) || "xlsx".equals(name[1])){
     				//处理文件
-    				XxxExcelUtil excel = new XxxExcelUtil();
+    				XxxExcelAnnotationImpl excel = new XxxExcelAnnotationImpl();
     				
     				excel.setExcelInputStream(mf.getInputStream()).setImportStartRow(1);
     				
@@ -561,7 +561,7 @@ public class POIAction {
     				logger.error("【fastexcel耗时】"+ (System.currentTimeMillis()-startTime) + "ms");
     				
     				
-    				XxxExcelUtil export = new XxxExcelUtil();
+    				XxxExcelAnnotationImpl export = new XxxExcelAnnotationImpl();
     				export.createExcel(list);
     				
     				String fileName="产品管理2.xls";  
@@ -721,7 +721,7 @@ public class POIAction {
     	String basePath = httpSession.getServletContext().getRealPath("/WEB-INF");
     	String filePath = basePath+"/excelModel/ZZSScottareModel.xls";
     	
-    	XxxExcelUtil excel = new XxxExcelUtil();
+    	XxxExcelAnnotationImpl excel = new XxxExcelAnnotationImpl();
     	//data
     	//封装整个excel所需数据,key为sheet名字,String
     	Map<String,Map<Integer,Map<Integer,String>>> fieldData = new HashMap<String, Map<Integer,Map<Integer,String>>>();

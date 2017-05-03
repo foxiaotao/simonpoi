@@ -60,8 +60,7 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	private Map<String, ValueConvert> valueMapping = new HashMap<String, ValueConvert>();
 	
 	/**
-	 * map 字段名 - 表格名 mapping关系
-	 * @param propertyMapping LinkedHashMap
+	 * @param propertyMapping LinkedHashMap：对象属性和excel表头对应，对象属性为key，表头中文名为value，map.put的顺序即为excel列的顺序
 	 * @return
 	 */
 	public ExcelUtilMapping setPropertyMapping(LinkedHashMap<String, String> propertyMapping){
@@ -75,8 +74,8 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	}
 	
 	
-	/**
-	 * 有标题行(自动判断开始行，不用设定开始行)
+	/** 导入入口方法1
+	 * 	有标题行(自动判断开始行，不用设定开始行)，获取表格数据
 	 * @param headIndex
 	 * @return
 	 */
@@ -103,8 +102,8 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 		
 		return list;
 	}
-	/**
-	 * 直接数据，没有标题行，所以没有对应关系，linkMap 的顺序 就是excel 列的顺序
+	/** 导入入口方法1
+	 *  直接数据，没有标题行，所以没有对应关系，linkMap 的顺序 就是excel 列的顺序
 	 */
 	public <T> List<T> getEntitiesHasNoHeader(int startIndex,Class<T> c){
 		List<T> list = new LinkedList<T>();
@@ -122,6 +121,10 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 		return list;
 	}
 	
+	/**
+	 * 获取中文表头的index 第几行
+	 * @return
+	 */
 	private int getHeadIndex(){
 		int rows = sheet.getPhysicalNumberOfRows();
 		int like = 0;
@@ -142,6 +145,11 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 		return -1;
 	}
 	
+	/**
+	 * 列序号和map key顺序对应关系，如果map的顺序就是excel列的顺序，那么这个status[0]=0,status[1]=1...status[n]=n
+	 * @param row
+	 * @return
+	 */
 	private Short[] getStatus(Row row){
 		Short[] status = new Short[map.size()];
 		//System.out.println("map.size():" + map.size());
@@ -179,7 +187,7 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	}
 	
 	/**
-	 * 
+	 * 获取某一行的数据
 	 */
 	private <T> T getEntity(Row row, Short[] status,Class<T> c){ 
 		setPropertyDescriptors(c);
@@ -301,7 +309,12 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 //===============================================导出=======================================
 //===============================================导出=======================================
 	
-
+	
+    /**导出主要入口方法
+     * @param datas
+     * @param clazz
+     * @return
+     */
     public <T> ExcelUtilMapping createExcel(List<?> datas,Class<T> clazz) {
     	setPropertyDescriptors(clazz);
     	workbook =  new XSSFWorkbook();
@@ -452,30 +465,45 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
         return this;
 	}
 
+	/**
+	 * 设置时间转换规则
+	 */
 	@Override
 	public ExcelUtilMapping setDateFormat(String format) {
 		this.dateFormat = new SimpleDateFormat(format);
         return this;
 	}
 
+	/**
+	 * 设置导出excel 的sheet名称（有默认值）
+	 */
 	@Override
 	public ExcelUtilMapping setSheetName(String sheetName) {
 		this.sheetName = sheetName;
 		return this;
 	}
 
+	/**
+	 * 设置导出起始行号（默认值0）
+	 */
 	@Override
 	public ExcelUtilMapping setImportStartRow(int startRow) {
 		this.importStartRow = startRow;
 		return this;
 	}
 
+	/**
+	 * 设置导出路径（导出到磁盘才用到）
+	 */
 	@Override
 	public ExcelUtilMapping setExcelFilePathIn(String excelFilePathIn) {
 		this.excelFilePathIn = excelFilePathIn;
 		return this;
 	}
 
+	/**
+	 * （导出到磁盘才用到）
+	 */
 	@Override
 	public Workbook createWorkbookByFilePath() {
 		Workbook workbook = null;
@@ -496,12 +524,18 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 		return workbook;
 	}
 
+	/**
+	 * （导出到磁盘才用到）
+	 */
 	@Override
 	public ExcelUtilMapping setOutFilePath(String outFilePath) {
 		this.outFilePath = outFilePath;
     	return this;
 	}
 
+	/**
+	 * （导出到磁盘才用到）
+	 */
 	@Override
 	public void createExcelFileOnDisk() {
 		FileOutputStream fileOutputStream = null;
@@ -522,8 +556,15 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/**
+	 * 需要子类实现抽象方法，目的每个导出所需样式 可 个性化配置，excel主体的样式
+	 */
     protected abstract void formatContentCell(Cell cell, int rowIndex, int colIndex, Object value);
-
+    /**
+	 * 需要子类实现抽象方法，目的每个导出所需样式 可 个性化配置，excel标题行的样式
+	 */
     protected abstract void formatHeadCell(Cell cell, int rowIndex, int colIndex);
 
 }

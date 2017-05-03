@@ -2,7 +2,7 @@ package simon.demo.core.util.simonexcel;
 
 import org.apache.poi.ss.usermodel.Cell;
 
-public class XxxExcelUtil extends ExcelUtilAnnotation {
+public class XxxExcelAnnotationImpl extends ExcelUtilAnnotation {
 
 	@Override
     protected void formatContentCell(Cell cell, int rowIndex, int colIndex,Object value) {

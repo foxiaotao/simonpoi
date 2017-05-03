@@ -1,7 +1,7 @@
 package simon.demo.core.util.simonexcel;
 
 import org.apache.poi.ss.usermodel.Cell;
-public class XxxExcelUtilMapping extends ExcelUtilMapping {
+public class XxxExcelMappingImpl extends ExcelUtilMapping {
 
 
 	@Override
