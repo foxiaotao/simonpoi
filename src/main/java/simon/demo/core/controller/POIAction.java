@@ -38,11 +38,9 @@ import simon.demo.core.bean.RandFFutrueBean;
 import simon.demo.core.bean.ReturnBean;
 import simon.demo.core.service.POIService;
 import simon.demo.core.service.ProductService;
-import simon.demo.core.util.ExcelByModelUtils;
 import simon.demo.core.util.simonexcel.ExcelByAnnotationUtil;
 import simon.demo.core.util.simonexcel.ExcelByMapUtil;
 import simon.demo.core.util.simonexcel.ExcelDealByModelUtil;
-import simon.demo.core.util.simonexcel.XxxExcelByAnnotationUtil;
 import simon.demo.core.util.simonexcel.XxxExcelByMapUtil;
 
 @Controller
