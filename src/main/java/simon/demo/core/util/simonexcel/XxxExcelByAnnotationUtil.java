@@ -1,8 +1,8 @@
 package simon.demo.core.util.simonexcel;
 
 import org.apache.poi.ss.usermodel.Cell;
-public class XxxExcelMappingImpl extends ExcelUtilMapping {
 
+public class XxxExcelByAnnotationUtil extends ExcelByAnnotationUtil {
 
 	@Override
     protected void formatContentCell(Cell cell, int rowIndex, int colIndex,Object value) {
@@ -26,7 +26,7 @@ public class XxxExcelMappingImpl extends ExcelUtilMapping {
     @Override
     protected void formatHeadCell(Cell cell, int rowIndex, int colIndex) {
     	sheet.setColumnWidth(colIndex, 10 * 2 * 256);
-    	setGeneralProperty(cellStyles[colIndex]);
+    	setGeneralProperty2(cellStyles[colIndex]);
     	cell.setCellStyle(cellStyles[colIndex]);
     }
 

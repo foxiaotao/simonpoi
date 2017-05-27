@@ -2,20 +2,13 @@ package simon.demo.core.test;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.web.subject.WebSubject;
 import org.junit.Test;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+
 
 public class RequestTest {//extends JunitSpringTest{
 
@@ -25,7 +18,7 @@ public class RequestTest {//extends JunitSpringTest{
 	}
 	
     public static void main(String[] args) {
-        System.out.println(getString());
+//        System.out.println(getString());
  
     }
     @SuppressWarnings("finally")

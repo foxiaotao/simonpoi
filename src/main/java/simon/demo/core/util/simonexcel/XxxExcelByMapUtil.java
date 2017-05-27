@@ -1,12 +1,12 @@
 package simon.demo.core.util.simonexcel;
 
 import org.apache.poi.ss.usermodel.Cell;
+public class XxxExcelByMapUtil extends ExcelByMapUtil {
 
-public class XxxExcelAnnotationImpl extends ExcelUtilAnnotation {
 
 	@Override
     protected void formatContentCell(Cell cell, int rowIndex, int colIndex,Object value) {
-//    	setGeneralProperty(cellStyles[colIndex]);
+    	setGeneralProperty2(cellStyles[colIndex]);
     	if(value == null) {
             cell.setCellValue("");
         }else {
@@ -26,7 +26,7 @@ public class XxxExcelAnnotationImpl extends ExcelUtilAnnotation {
     @Override
     protected void formatHeadCell(Cell cell, int rowIndex, int colIndex) {
     	sheet.setColumnWidth(colIndex, 10 * 2 * 256);
-    	setGeneralProperty(cellStyles[colIndex]);
+    	setGeneralProperty2(cellStyles[colIndex]);
     	cell.setCellStyle(cellStyles[colIndex]);
     }
 

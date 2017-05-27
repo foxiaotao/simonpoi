@@ -29,7 +29,7 @@ import org.springframework.util.Assert;
  * @日期: 2016-6-2 上午11:00:27
  * @版本: v1.0
  */
-public class ExcelByModelUtil {
+public class ExcelByModelUtils {
 	Logger logger = Logger.getLogger(this.getClass());
 	
 	protected HSSFWorkbook workBook;
@@ -51,7 +51,7 @@ public class ExcelByModelUtil {
 	 * @param modelPath
 	 * @return
 	 */
-	public ExcelByModelUtil setModelPath(String modelPath){
+	public ExcelByModelUtils setModelPath(String modelPath){
 		Assert.notNull(modelPath, "路径不能为空!");
 		this.modelPath = modelPath;
 		return this;
@@ -62,7 +62,7 @@ public class ExcelByModelUtil {
 	 * @param cellCount  总列数
 	 * @return
 	 */
-	public ExcelByModelUtil setRowCellCount(int rowCount,int cellCount){
+	public ExcelByModelUtils setRowCellCount(int rowCount,int cellCount){
 		this.allRowCount = rowCount;
 		this.allCellCount = cellCount;
 		return this;
@@ -75,7 +75,7 @@ public class ExcelByModelUtil {
 	 * @throws Exception 
 	 * @throws FileNotFoundException 
 	 */
-	public ExcelByModelUtil writeDataByMap(Map<String,Map<Integer,Map<Integer,String>>> fieldData) {
+	public ExcelByModelUtils writeDataByMap(Map<String,Map<Integer,Map<Integer,String>>> fieldData) {
 		//拿到模板工作簿(模板只能xls文件,不能是xlsx文件,如果要支持office2007以上需要poi-ooxxml.jar包,使用XSSFWorkbook类)
 		
 		this.fieldData = fieldData;
@@ -141,7 +141,7 @@ public class ExcelByModelUtil {
 	 * @throws Exception 
 	 * @throws FileNotFoundException 
 	 */
-	public ExcelByModelUtil writeDataByList(Map<String,List<String>> mapdata) {
+	public ExcelByModelUtils writeDataByList(Map<String,List<String>> mapdata) {
 		//拿到模板工作簿(模板只能xls文件,不能是xlsx文件,如果要支持office2007以上需要poi-ooxxml.jar包,使用XSSFWorkbook类)
 		
 		this.sheetData = mapdata;

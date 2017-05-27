@@ -53,7 +53,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @param <T>
  */
-public abstract class ExcelUtilMapping extends ExcelAbstract{
+public class ExcelByMapUtil extends ExcelAbstract{
 	private LinkedHashMap<String, String> propertyMapping;
 	private Map<String, Short> map;
 	private PropertyDescriptor[] propertyDescriptors;
@@ -63,7 +63,7 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	 * @param propertyMapping LinkedHashMap：对象属性和excel表头对应，对象属性为key，表头中文名为value，map.put的顺序即为excel列的顺序
 	 * @return
 	 */
-	public ExcelUtilMapping setPropertyMapping(LinkedHashMap<String, String> propertyMapping){
+	public ExcelByMapUtil setPropertyMapping(LinkedHashMap<String, String> propertyMapping){
 		this.propertyMapping = propertyMapping;
 		this.map = new HashMap<String, Short>();
 		Short i = 0;
@@ -315,7 +315,7 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
      * @param clazz
      * @return
      */
-    public <T> ExcelUtilMapping createExcel(List<?> datas,Class<T> clazz) {
+    public <T> ExcelByMapUtil createExcel(List<?> datas,Class<T> clazz) {
     	setPropertyDescriptors(clazz);
     	workbook =  new XSSFWorkbook();
 //    	workbook =  new SXSSFWorkbook(5000);
@@ -456,7 +456,7 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	}
 
 	@Override
-	public ExcelUtilMapping setExcelInputStream(InputStream inputStream) {
+	public ExcelByMapUtil setExcelInputStream(InputStream inputStream) {
 		try {
 			this.workbook = WorkbookFactory.create(inputStream);
 		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
@@ -469,7 +469,7 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	 * 设置时间转换规则
 	 */
 	@Override
-	public ExcelUtilMapping setDateFormat(String format) {
+	public ExcelByMapUtil setDateFormat(String format) {
 		this.dateFormat = new SimpleDateFormat(format);
         return this;
 	}
@@ -478,7 +478,7 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	 * 设置导出excel 的sheet名称（有默认值）
 	 */
 	@Override
-	public ExcelUtilMapping setSheetName(String sheetName) {
+	public ExcelByMapUtil setSheetName(String sheetName) {
 		this.sheetName = sheetName;
 		return this;
 	}
@@ -487,7 +487,7 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	 * 设置导出起始行号（默认值0）
 	 */
 	@Override
-	public ExcelUtilMapping setImportStartRow(int startRow) {
+	public ExcelByMapUtil setImportStartRow(int startRow) {
 		this.importStartRow = startRow;
 		return this;
 	}
@@ -496,7 +496,7 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	 * 设置导出路径（导出到磁盘才用到）
 	 */
 	@Override
-	public ExcelUtilMapping setExcelFilePathIn(String excelFilePathIn) {
+	public ExcelByMapUtil setExcelFilePathIn(String excelFilePathIn) {
 		this.excelFilePathIn = excelFilePathIn;
 		return this;
 	}
@@ -528,7 +528,7 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	 * （导出到磁盘才用到）
 	 */
 	@Override
-	public ExcelUtilMapping setOutFilePath(String outFilePath) {
+	public ExcelByMapUtil setOutFilePath(String outFilePath) {
 		this.outFilePath = outFilePath;
     	return this;
 	}
@@ -558,14 +558,38 @@ public abstract class ExcelUtilMapping extends ExcelAbstract{
 	}
 	
 	
-	/**
-	 * 需要子类实现抽象方法，目的每个导出所需样式 可 个性化配置，excel主体的样式
-	 */
-    protected abstract void formatContentCell(Cell cell, int rowIndex, int colIndex, Object value);
+	
+   
+	
     /**
-	 * 需要子类实现抽象方法，目的每个导出所需样式 可 个性化配置，excel标题行的样式
-	 */
-    protected abstract void formatHeadCell(Cell cell, int rowIndex, int colIndex);
-
+     *     需要子类实现抽象方法，目的每个导出所需样式 可 个性化配置，excel主体的样式
+     */
+    @Override
+    protected void formatContentCell(Cell cell, int rowIndex, int colIndex,Object value) {
+    	if(value == null) {
+            cell.setCellValue("");
+        }else {
+            // 自适应宽度
+            int cellLength = value.toString().getBytes().length;
+            // excel有列宽限制的 255字符
+            if (cellLength > 125) {
+            	cellLength = 125;
+            } else if (cellLength < 10) {
+            	cellLength = 10;
+            }
+            sheet.setColumnWidth(colIndex, cellLength * 2 * 256);
+        }
+    	cell.setCellStyle(cellStyles[colIndex]);
+    }
+    
+    /**
+     *     需要子类实现抽象方法，目的每个导出所需样式 可 个性化配置，excel主体的样式
+     */
+    @Override
+    protected void formatHeadCell(Cell cell, int rowIndex, int colIndex) {
+    	sheet.setColumnWidth(colIndex, 10 * 2 * 256);
+    	setGeneralProperty(cellStyles[colIndex]);
+    	cell.setCellStyle(cellStyles[colIndex]);
+    }
 }
 

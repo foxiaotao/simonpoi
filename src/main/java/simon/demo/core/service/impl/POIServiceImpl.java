@@ -11,10 +11,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import simon.demo.core.bean.ExchangeRate;
+import simon.demo.core.bean.RandFFutrueBean;
 import simon.demo.core.service.POIService;
 import simon.demo.core.util.ExcelUtil;
-import simon.demo.core.util.fastexcel.MapperCell;
-import simon.demo.core.util.fastexcel.RandFFutrueBean;
 
 @Service
 public class POIServiceImpl implements POIService {

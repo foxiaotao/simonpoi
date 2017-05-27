@@ -28,7 +28,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.util.Assert;
 
-import simon.demo.core.util.ExcelByModelUtil;
+import simon.demo.core.util.ExcelByModelUtils;
 
 /**
  * poi excel报表导入导出工具类
@@ -119,6 +119,16 @@ public abstract class ExcelAbstract  implements Closeable {
 	public ExcelAbstract setModelPath(String modelPath){
 		Assert.notNull(modelPath, "路径不能为空!");
 		this.modelPath = modelPath;
+		return this;
+	}
+	/**
+	 * @param rowCount  总行数
+	 * @param cellCount  总列数
+	 * @return
+	 */
+	public ExcelAbstract setRowCellCount(int rowCount,int cellCount){
+		this.allRowCount = rowCount;
+		this.allCellCount = cellCount;
 		return this;
 	}
 	/**
@@ -274,21 +284,6 @@ public abstract class ExcelAbstract  implements Closeable {
 	}
 	
 	
-	
-	/**封装一行row多有cell的数据到map中
-	 * @param cellNos:一个cell所有需要写值的cellNo
-	 * @param cellValues:每个cell对应的value
-	 * @return	Map<Integer,String> cellMap:一个封装了cell数据的map
-	 */
-	public Map<Integer,String> fillCellMapData(Integer[] cellNos,String[] cellValues){
-		Map<Integer, String> cellMapData = new HashMap<Integer, String>();	//实例化cellMap,新的对象,封装第n行信息
-		if(cellNos.length>0 && cellValues.length== cellNos.length){
-			for (int i = 0; i < cellNos.length; i++) {
-				cellMapData.put(cellNos[i], cellValues[i]);
-			}
-		}
-		return cellMapData;
-	}
     /**
 	 * 功能描述：设置EXCEL表格基本样式
 	 */
@@ -303,6 +298,20 @@ public abstract class ExcelAbstract  implements Closeable {
 		style.setTopBorderColor(HSSFColor.BLACK.index);
 		style.setAlignment(HorizontalAlignment.CENTER);
 	}
+    /**
+     * 功能描述：设置EXCEL表格基本样式 蓝色样式边框
+     */
+    protected void setGeneralProperty2(CellStyle style) {
+    	style.setBorderBottom(BorderStyle.THIN);
+    	style.setBottomBorderColor(HSSFColor.BLUE.index);
+    	style.setBorderLeft(BorderStyle.THIN);
+    	style.setLeftBorderColor(HSSFColor.BLUE.index);
+    	style.setBorderRight(BorderStyle.THIN);
+    	style.setRightBorderColor(HSSFColor.BLUE.index);
+    	style.setBorderTop(BorderStyle.THIN);
+    	style.setTopBorderColor(HSSFColor.BLUE.index);
+    	style.setAlignment(HorizontalAlignment.CENTER);
+    }
     
     /**
      * @return

@@ -31,7 +31,6 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import simon.demo.core.util.fastexcel.MapperCell;
 
 /**
  * poi实现，根据bean对象注解对应excel字段，实现导入导出
@@ -39,7 +38,7 @@ import simon.demo.core.util.fastexcel.MapperCell;
  * @author snutao
  *
  */
-public abstract class ExcelUtilAnnotation extends ExcelAbstract{
+public class ExcelByAnnotationUtil extends ExcelAbstract{
 
 	//++++++++++++++++++++++++++++++++++++++++++====导入====+++++++++++++++++++++++++++++++++++++++++++
 	//++++++++++++++++++++++++++++++++++++++++++====导入====+++++++++++++++++++++++++++++++++++++++++++
@@ -50,7 +49,7 @@ public abstract class ExcelUtilAnnotation extends ExcelAbstract{
 	     * @param format 格式
 	     */
 		@Override
-	    public ExcelUtilAnnotation setDateFormat(String format) {
+	    public ExcelByAnnotationUtil setDateFormat(String format) {
 	        this.dateFormat = new SimpleDateFormat(format);
 	        return this;
 	    }
@@ -60,7 +59,7 @@ public abstract class ExcelUtilAnnotation extends ExcelAbstract{
 	     * @param sheetName 需要读取的Sheet名字
 	     */
 		@Override
-	    public ExcelUtilAnnotation setSheetName(String sheetName) {
+	    public ExcelByAnnotationUtil setSheetName(String sheetName) {
 	        this.sheetName = sheetName;
 	        return this;
 	    }
@@ -70,7 +69,7 @@ public abstract class ExcelUtilAnnotation extends ExcelAbstract{
 	     * @param startRow 开始行数
 	     */
 		@Override
-	    public ExcelUtilAnnotation setImportStartRow(int startRow) {
+	    public ExcelByAnnotationUtil setImportStartRow(int startRow) {
 	        if (startRow < 1) {
 	            throw new RuntimeException("最小为1");
 	        }
@@ -83,7 +82,7 @@ public abstract class ExcelUtilAnnotation extends ExcelAbstract{
 	     * @throws IOException
 	     */
 		@Override
-	    public ExcelUtilAnnotation setExcelFilePathIn(String excelFilePathIn){
+	    public ExcelByAnnotationUtil setExcelFilePathIn(String excelFilePathIn){
 	        this.excelFilePathIn = excelFilePathIn;
 	        this.workbook = createWorkbookByFilePath();
 	    	return this;
@@ -120,7 +119,7 @@ public abstract class ExcelUtilAnnotation extends ExcelAbstract{
 	     * @throws InvalidFormatException 非法的格式异常
 	     */
 	    @Override
-	    public ExcelUtilAnnotation setExcelInputStream(InputStream inputStream) {
+	    public ExcelByAnnotationUtil setExcelInputStream(InputStream inputStream) {
 	        try {
 				this.workbook = WorkbookFactory.create(inputStream);
 			} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
@@ -271,7 +270,7 @@ public abstract class ExcelUtilAnnotation extends ExcelAbstract{
 	     * @return
 	     */
 	    @Override
-	    public ExcelUtilAnnotation setOutFilePath(String outFilePath){
+	    public ExcelByAnnotationUtil setOutFilePath(String outFilePath){
 	    	this.outFilePath = outFilePath;
 	    	return this;
 	    }
@@ -432,8 +431,30 @@ public abstract class ExcelUtilAnnotation extends ExcelAbstract{
 	        }
 	    }
 	    
-	    protected abstract void formatContentCell(Cell cell, int rowIndex, int colIndex, Object value);
+		@Override
+	    protected void formatContentCell(Cell cell, int rowIndex, int colIndex,Object value) {
+//	    	setGeneralProperty(cellStyles[colIndex]);
+	    	if(value == null) {
+	            cell.setCellValue("");
+	        }else {
+	            // 自适应宽度
+	            int cellLength = value.toString().getBytes().length;
+	            // excel有列宽限制的 255字符
+	            if (cellLength > 125) {
+	            	cellLength = 125;
+	            } else if (cellLength < 10) {
+	            	cellLength = 10;
+	            }
+	            sheet.setColumnWidth(colIndex, cellLength * 2 * 256);
+	        }
+	    	cell.setCellStyle(cellStyles[colIndex]);
+	    }
 
-	    protected abstract void formatHeadCell(Cell cell, int rowIndex, int colIndex);
+	    @Override
+	    protected void formatHeadCell(Cell cell, int rowIndex, int colIndex) {
+	    	sheet.setColumnWidth(colIndex, 10 * 2 * 256);
+	    	setGeneralProperty(cellStyles[colIndex]);
+	    	cell.setCellStyle(cellStyles[colIndex]);
+	    }
 
 }

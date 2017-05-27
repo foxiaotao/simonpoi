@@ -1,5 +1,7 @@
-package simon.demo.core.util.fastexcel;
+package simon.demo.core.bean;
 import java.io.Serializable;
+
+import simon.demo.core.util.simonexcel.MapperCell;
 
 public class RandFFutrueBean implements Serializable{
 	

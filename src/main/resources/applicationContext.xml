@@ -47,63 +47,6 @@
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 	
-<!-- 	<bean id="sqlDao" class="simon.demo.core.dao.util.SqlDao"> -->
-<!-- 		<property name="jdbcTemplate" ref="jdbcTemplate"/> -->
-<!-- 	</bean> -->
-	
-<!-- 	 事务 --> 
-<!-- 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
-<!-- 		<property name="dataSource" ref="dataSource"/> -->
-<!-- 	</bean> -->
 
-<!-- 	<tx:advice id="txAdvice" transaction-manager="txManager"> -->
-<!-- 		<tx:attributes> -->
-<!-- 			<tx:method name="insert*" propagation="REQUIRED"/> -->
-<!-- 			<tx:method name="update*" propagation="REQUIRED"/> -->
-<!-- 			<tx:method name="delete*" propagation="REQUIRED"/> -->
-			
-<!-- 			<tx:method name="find" read-only="true"/> -->
-<!-- 			<tx:method name="get" read-only="true"/> -->
-<!-- 			<tx:method name="*" propagation="REQUIRED"/> -->
-<!-- 		</tx:attributes> -->
-<!-- 	</tx:advice> -->
-	
-<!-- 	<aop:config> -->
-<!-- 		<aop:pointcut expression="execution(* simon.demo.core.service.*.*(..))" id="pointCut"/> -->
-<!-- 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointCut"/> -->
-<!-- 	</aop:config> -->
-	
-	<!-- ================ Shiro start ================ -->
-	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realm" ref="ShiroRealm" />
-	</bean>
-	
-	<!-- 項目自定义的Realm -->
-    <bean id="ShiroRealm" class="simon.demo.core.shiro.ShiroRealm" ></bean>
-	
-	<!-- Shiro Filter -->
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" />
-		
-		<property name="loginUrl" value="/login_tologin.do" />
-		
-		<property name="successUrl" value="/Home/index.do" />
-		
-		<property name="unauthorizedUrl" value="/login_tologin.do" />
-		
-		<property name="filterChainDefinitions">
-			<value>
-           		/login_tologin.do	= anon
-           		/index.jsp			= anon
-           		/login_login.do	    = anon
-           		/login_loginout.do	= anon
-           		/poi/inp.do	= anon
-           		/poi/inportXls.do	= anon
-           		/poi/*	= anon
-           		/**					= authc
-			</value>
-		</property>
-	</bean>
-	<!-- ================ Shiro end ================ -->
 	
 </beans>
