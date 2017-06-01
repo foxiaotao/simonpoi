@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -36,7 +35,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import simon.demo.core.bean.Product;
 import simon.demo.core.bean.RandFFutrueBean;
 import simon.demo.core.bean.ReturnBean;
-import simon.demo.core.service.POIService;
 import simon.demo.core.service.ProductService;
 import simon.demo.core.util.simonexcel.ExcelByAnnotationUtil;
 import simon.demo.core.util.simonexcel.ExcelByMapUtil;
@@ -55,9 +53,6 @@ public class POIAction {
 //	
 	@Autowired
     ProductService productServiceImpl;
-
-	@Autowired
-    POIService poiServiceImpl;
 	
 	@RequestMapping(value="/inp.do")
     public String inportIndex() throws Exception {
@@ -215,11 +210,12 @@ public class POIAction {
     			name = xlsName.split("\\.");
     			//验证文件格式
     			if("xls".equals(name[1])){
-    				XxxExcelByMapUtil excelutil = new XxxExcelByMapUtil();
-    				List entities = excelutil.setExcelInputStream(mf.getInputStream()).setPropertyMapping(pm).getEntities(RandFFutrueBean.class);
-//    				List entities = excelutil.setExcelInputStream(mf.getInputStream()).setImportStartRow(-1).setPropertyMapping(pm).getEntitiesHasNoHeader(1);
+    				ExcelByMapUtil excelutil = new ExcelByMapUtil();
+    				List<RandFFutrueBean> entities = excelutil.setExcelInputStream(mf.getInputStream()).setPropertyMapping(pm).getEntities(RandFFutrueBean.class);//
     				System.out.println(entities.size());
 //    				处理文件
+    				System.out.println(entities.get(entities.size()-1).getAd_contract_id());
+    				
     				return new ResponseEntity(new ReturnBean(true,"上传成功"), HttpStatus.OK);
     			}else{
     				return new ResponseEntity("上传失败,文件大小超过2M限制", HttpStatus.OK);
@@ -422,7 +418,11 @@ public class POIAction {
     //======================================= 模板导出 ====================================
     //===================================================================================
     
-    
+    /**
+     * 当导出时，表格特别复杂，像项目路径doc 下ZZSScottareModel.xls 中，需要填写关键几个地方，可以用这个ZZSScottareModel.xls文件作为模板，填充模板中关键的 （# ）地方
+     * @param request
+     * @return
+     */
     @RequestMapping(value="exportModelList.do")
     public ResponseEntity<byte[]> exportModelList(HttpServletRequest request){
     	HttpSession httpSession = request.getSession();   
@@ -479,7 +479,11 @@ public class POIAction {
     	return new ResponseEntity<byte[]>(excel.toByteArray(),header,HttpStatus.CREATED);
     }
     
-    
+    /**
+     * 当导出时，表格特别复杂，像项目路径doc 下ZZSScottareModel.xls 中，需要填写关键几个地方，可以用这个ZZSScottareModel.xls文件作为模板，填充模板中关键的 （已知的 ）地方
+     * @param request
+     * @return
+     */
     @RequestMapping(value="exportModelMapUtil.do")
     public ResponseEntity<byte[]> exportModelMapUtil(HttpServletRequest request){
     	HttpSession httpSession = request.getSession();   
