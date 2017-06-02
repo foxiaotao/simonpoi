@@ -81,20 +81,21 @@ public class ExcelByMapUtil extends ExcelAbstract{
 	 */
 	public <T> List<T> getEntities(Class<T> c){
 		List<T> list = new LinkedList<T>();
+		//获取excel 中所有sheet
 		int num = workbook.getNumberOfSheets();	
 		//迭代excel中的每一个sheet
 		for(int i = 0; i < num; i++){
 			sheet = workbook.getSheetAt(i);
 			
-			int rows = sheet.getPhysicalNumberOfRows();
+			int rows = sheet.getPhysicalNumberOfRows();//获取有效的行，有效的总行数
 			Row headRow = null;
 			int headIndex = getHeadIndex();
 			if(headIndex != -1){
 				headRow = sheet.getRow(headIndex);
 			}
-			//System.out.println("sheet.getRow(headIndex)="+sheet.getRow(headIndex));
-			Short[] st = getStatus(headRow);
+			Short[] st = getStatus(headRow);//列序号和map key顺序对应关系，如果map的顺序就是excel列的顺序，那么这个status[0]=0,status[1]=1...status[n]=n
 			for(int j = headIndex + 1 ; j < rows; j++){
+				//getEntity（sheet，st，c），是获取一行的数据
 				list.add(getEntity(sheet.getRow(j), st , c));
 			}
 			
@@ -190,23 +191,27 @@ public class ExcelByMapUtil extends ExcelAbstract{
 	 * 获取某一行的数据
 	 */
 	private <T> T getEntity(Row row, Short[] status,Class<T> c){ 
-		setPropertyDescriptors(c);
+		setPropertyDescriptors(c);//根据c的字节码，获取bean 实体对象的属性描述器，可通过属性描述器 对该属性 进行读写
 		T t = null;
 			try {
-				t = c.newInstance();
+				t = c.newInstance();//实例化 bean 对象，供封装这行的excel 数据用，反射实现
 				for(int i = 0; i < propertyDescriptors.length; i++){
 					try{
+						//属性描述器
 						PropertyDescriptor pd = propertyDescriptors[i];
+						//属性名
 						String propertyName = pd.getName();
 //						System.out.println(" pd.getName()="+ propertyName); 
-						 
+						//如果  excel表头-对象属性 对应map 的key 包含 属性名 ，则准备对该属性 写操作
 						if(propertyMapping.keySet().contains(propertyName)){
 							Method method = pd.getWriteMethod();
 //							System.out.println("===" + status[map.get(propertyName)]);
 							@SuppressWarnings("deprecation")
-							Cell cell = row.getCell(status[map.get(propertyName)]);
+							//之前已经将 excel列序号和map key顺序对应关系，如果map的顺序就是excel列的顺序，那么这个status[0]=0,status[1]=1...status[n]=n
+							Cell cell = row.getCell(status[map.get(propertyName)]);//就是根据属性名，获取对应excel 列（cell，得到cell了 就能拿到数据了）
 							Object value = null;
 							if(cell != null){
+								//根据cell 的数据类型 获取
 								switch(cell.getCellType()){
 								case HSSFCell.CELL_TYPE_NUMERIC : 
 //									value = cell.getNumericCellValue();
@@ -254,35 +259,18 @@ public class ExcelByMapUtil extends ExcelAbstract{
 									value = dateFormat.parseObject(String.valueOf(value));							
 							}
 							
+							//可以不用看这里  没用到，但是不要删
 							if(valueMapping != null && valueMapping.containsKey(propertyName)){
 								ValueConvert vc = valueMapping.get(propertyName);  
 								value = vc.convert(value);
-//								System.out.println("-----------value1----------------" + value);
-//								for(String key : values.keySet()){
-//									if(String.valueOf(value).indexOf(values.get(key)) > -1){
-//										value = String.valueOf(value).replace(values.get(key), key);
-//									}
-//								}
-//								System.out.println("-----------value2----------------" + value);
-//								if(values.containsValue(value)){
-//									for(String key : values.keySet()){
-//										if(value.equals(values.get(key))){
-//											value = key;
-//											break;
-//										}
-//									}
-//								}
-								
 							}		
-//							System.out.println("value==" + value);
-							//System.out.println(value.getClass().getName());  
+							//反射 属性写操作，将value封装到bean 对象
 							if(value != null){ 
 								method.invoke(t, value);	
 							} 
 						}
 					}catch(Exception e){
 						e.printStackTrace();
-
 					}
 				}
 			} catch (InstantiationException e) {
