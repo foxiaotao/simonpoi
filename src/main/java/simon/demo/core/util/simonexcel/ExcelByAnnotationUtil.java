@@ -50,7 +50,7 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 	     */
 		@Override
 	    public ExcelByAnnotationUtil setDateFormat(String format) {
-	        this.dateFormat = new SimpleDateFormat(format);
+	        super.setDateFormat(dateFormat);
 	        return this;
 	    }
 	    
@@ -60,7 +60,7 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 	     */
 		@Override
 	    public ExcelByAnnotationUtil setSheetName(String sheetName) {
-	        this.sheetName = sheetName;
+			super.setSheetName(sheetName);
 	        return this;
 	    }
 	    
@@ -70,10 +70,7 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 	     */
 		@Override
 	    public ExcelByAnnotationUtil setImportStartRow(int startRow) {
-	        if (startRow < 1) {
-	            throw new RuntimeException("最小为1");
-	        }
-	        this.importStartRow = --startRow;
+			super.setImportStartRow(startRow);
 	        return this;
 	    }
 	    /**
@@ -81,35 +78,20 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 	     * @param excelFilePath
 	     * @throws IOException
 	     */
-		@Override
-	    public ExcelByAnnotationUtil setExcelFilePathIn(String excelFilePathIn){
-	        this.excelFilePathIn = excelFilePathIn;
-	        this.workbook = createWorkbookByFilePath();
-	    	return this;
-	    };
+//		@Override
+//	    public ExcelByAnnotationUtil setExcelFilePathIn(String excelFilePathIn){
+//	        super.setExcelFilePathIn(excelFilePathIn);
+//	        return this;
+//	    };
 	    
 	    /**
 	     * 创建工作簿（excelFilePath的形式）
 	     * @throws IOException
 	     * @throws InvalidFormatException
 	     */
-	    public Workbook createWorkbookByFilePath() {
-	        Workbook workbook = null;
-	        File file = new File(this.excelFilePathIn);
-	        try {
-				if (!file.exists()) {
-				    logger.error("文件:{} 不存在！创建此文件！"+ this.excelFilePathIn);
-				    if (!file.createNewFile()) {
-				        throw new IOException("文件创建失败");
-				    }
-				    workbook = new XSSFWorkbook();
-				} else {
-				    workbook = WorkbookFactory.create(file);
-				}
-			} catch (Exception e) {
-				logger.error(e.getMessage());
-			}
-			return workbook;
+	    public ExcelByAnnotationUtil createWorkbookByFilePath(String inFilePath) {
+	        super.createWorkbookByFilePath(inFilePath);
+	        return this;
 	    }
 	    
 	    /**
@@ -120,11 +102,7 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 	     */
 	    @Override
 	    public ExcelByAnnotationUtil setExcelInputStream(InputStream inputStream) {
-	        try {
-				this.workbook = WorkbookFactory.create(inputStream);
-			} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
-				logger.error(e.getMessage());
-			}
+	        super.setExcelInputStream(inputStream);
 	        return this;
 	    }
 
@@ -269,11 +247,11 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 	     * @param outFilePath
 	     * @return
 	     */
-	    @Override
-	    public ExcelByAnnotationUtil setOutFilePath(String outFilePath){
-	    	this.outFilePath = outFilePath;
-	    	return this;
-	    }
+//	    @Override
+//	    public ExcelByAnnotationUtil setOutFilePath(String outFilePath){
+//	    	super.setOutFilePath(outFilePath);
+//	    	return this;
+//	    }
 	    
 	    
 	    /**
@@ -349,24 +327,9 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 	     * 将生成的excel 保存在磁盘 outFilePath 磁盘路径
 	     */
 	    @Override
-	    public void createExcelFileOnDisk(){
-	    	FileOutputStream fileOutputStream = null;
-	    	File file = new File(this.outFilePath);
-	        try {
-				if (!file.exists()) {
-				    if (!file.createNewFile()) {
-				        throw new IOException("文件创建失败");
-				    }
-				}
-				fileOutputStream = new FileOutputStream(file);
-				workbook.write(fileOutputStream);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	    public ExcelByAnnotationUtil createExcelFileOnDisk(String path){
+	    	super.createExcelFileOnDisk(path);
+	    	return this;
 	    }
 	    
 	    /**
@@ -433,28 +396,12 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 	    
 		@Override
 	    protected void formatContentCell(Cell cell, int rowIndex, int colIndex,Object value) {
-//	    	setGeneralProperty(cellStyles[colIndex]);
-	    	if(value == null) {
-	            cell.setCellValue("");
-	        }else {
-	            // 自适应宽度
-	            int cellLength = value.toString().getBytes().length;
-	            // excel有列宽限制的 255字符
-	            if (cellLength > 125) {
-	            	cellLength = 125;
-	            } else if (cellLength < 10) {
-	            	cellLength = 10;
-	            }
-	            sheet.setColumnWidth(colIndex, cellLength * 2 * 256);
-	        }
-	    	cell.setCellStyle(cellStyles[colIndex]);
+			super.formatContentCell(cell, rowIndex, colIndex, value);
 	    }
 
 	    @Override
 	    protected void formatHeadCell(Cell cell, int rowIndex, int colIndex) {
-	    	sheet.setColumnWidth(colIndex, 10 * 2 * 256);
-	    	setGeneralProperty(cellStyles[colIndex]);
-	    	cell.setCellStyle(cellStyles[colIndex]);
+	    	super.formatHeadCell(cell, rowIndex, colIndex);
 	    }
 
 }

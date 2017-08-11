@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -16,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -32,9 +36,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import simon.demo.core.bean.PartyMember;
 import simon.demo.core.bean.Product;
+import simon.demo.core.bean.R360Rusult;
 import simon.demo.core.bean.RandFFutrueBean;
 import simon.demo.core.bean.ReturnBean;
+import simon.demo.core.dao.ProductMapper;
 import simon.demo.core.service.ProductService;
 import simon.demo.core.util.simonexcel.ExcelByAnnotationUtil;
 import simon.demo.core.util.simonexcel.ExcelByMapUtil;
@@ -53,6 +60,9 @@ public class POIAction {
 //	
 	@Autowired
     ProductService productServiceImpl;
+	@Autowired
+    ProductMapper productMapper;
+	
 	
 	@RequestMapping(value="/inp.do")
     public String inportIndex() throws Exception {

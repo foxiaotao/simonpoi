@@ -112,10 +112,12 @@ public class ExcelByMapUtil extends ExcelAbstract{
 		//迭代excel中的每一个sheet
 		for(int i = 0; i < num; i++){
 			sheet = workbook.getSheetAt(i);
-			int rows = sheet.getPhysicalNumberOfRows();
-			//System.out.println("sheet.getRow(headIndex)="+sheet.getRow(headIndex));
+			int rowCount = sheet.getPhysicalNumberOfRows();
+			
+			//开始行的数据 视为完整的;
+			int cellCount = sheet.getRow(startIndex).getPhysicalNumberOfCells();
 			Short[] st = getStatus(null);
-			for(int j = startIndex ; j < rows; j++){
+			for(int j = startIndex ; j < rowCount; j++){
 				list.add(getEntity(sheet.getRow(j), st, c));
 			}
 		}
@@ -151,12 +153,12 @@ public class ExcelByMapUtil extends ExcelAbstract{
 	 * @param row
 	 * @return
 	 */
-	private Short[] getStatus(Row row){
+	private <T> Short[] getStatus(Row row){
 		Short[] status = new Short[map.size()];
 		//System.out.println("map.size():" + map.size());
 		if(row == null){
 			for(String key : map.keySet()){
-				status[map.get(key)] = map.get(key); 
+				status[map.get(key)] = Short.valueOf(map.get(key)); 
 			}
 		}else{
 			int cells = row.getPhysicalNumberOfCells();
@@ -248,6 +250,38 @@ public class ExcelByMapUtil extends ExcelAbstract{
 										 value = resultStr;
 									} 
 									
+									break;
+								case HSSFCell.CELL_TYPE_FORMULA :
+									String resultStr3 = cell.getStringCellValue() == null ? "" : cell.getStringCellValue().trim();
+									if(pd.getPropertyType() == Integer.class || pd.getPropertyType() == int.class){
+										value = Integer.parseInt(resultStr3);
+									}else if(pd.getPropertyType() == Float.class || pd.getPropertyType() == float.class){
+										value = Float.parseFloat(resultStr3);
+									}else if(pd.getPropertyType() == Double.class || pd.getPropertyType() == double.class){
+										value = Double.parseDouble(resultStr3);
+									}else if(pd.getPropertyType() == Long.class || pd.getPropertyType() == long.class){
+										value = Long.parseLong(resultStr3);
+									}else if(pd.getPropertyType() == Short.class || pd.getPropertyType() == short.class){
+										value = Short.parseShort(resultStr3);
+									}else if(pd.getPropertyType() == String.class){
+										value = resultStr3;
+									} 
+									break;
+								case HSSFCell.CELL_TYPE_BLANK :
+									String resultStr4 = cell.getStringCellValue() == null ? "" : cell.getStringCellValue().trim();
+									if(pd.getPropertyType() == Integer.class || pd.getPropertyType() == int.class){
+										value = Integer.parseInt(resultStr4);
+									}else if(pd.getPropertyType() == Float.class || pd.getPropertyType() == float.class){
+										value = Float.parseFloat(resultStr4);
+									}else if(pd.getPropertyType() == Double.class || pd.getPropertyType() == double.class){
+										value = Double.parseDouble(resultStr4);
+									}else if(pd.getPropertyType() == Long.class || pd.getPropertyType() == long.class){
+										value = Long.parseLong(resultStr4);
+									}else if(pd.getPropertyType() == Short.class || pd.getPropertyType() == short.class){
+										value = Short.parseShort(resultStr4);
+									}else if(pd.getPropertyType() == String.class){
+										value = resultStr4;
+									} 
 									break;
 								default :
 									break;
@@ -438,18 +472,13 @@ public class ExcelByMapUtil extends ExcelAbstract{
 	}
 
 	@Override
-	public void close() throws IOException {
-		// TODO Auto-generated method stub
-		
+	public void closeWorkbook(){
+		super.closeWorkbook();
 	}
 
 	@Override
 	public ExcelByMapUtil setExcelInputStream(InputStream inputStream) {
-		try {
-			this.workbook = WorkbookFactory.create(inputStream);
-		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
-			logger.error(e.getMessage());
-		}
+		super.setExcelInputStream(inputStream);
         return this;
 	}
 
@@ -458,7 +487,7 @@ public class ExcelByMapUtil extends ExcelAbstract{
 	 */
 	@Override
 	public ExcelByMapUtil setDateFormat(String format) {
-		this.dateFormat = new SimpleDateFormat(format);
+		super.setDateFormat(dateFormat);
         return this;
 	}
 
@@ -467,7 +496,7 @@ public class ExcelByMapUtil extends ExcelAbstract{
 	 */
 	@Override
 	public ExcelByMapUtil setSheetName(String sheetName) {
-		this.sheetName = sheetName;
+		super.setSheetName(sheetName);
 		return this;
 	}
 
@@ -476,73 +505,57 @@ public class ExcelByMapUtil extends ExcelAbstract{
 	 */
 	@Override
 	public ExcelByMapUtil setImportStartRow(int startRow) {
-		this.importStartRow = startRow;
+		super.setImportStartRow(startRow);
 		return this;
 	}
 
 	/**
 	 * 设置导出路径（导出到磁盘才用到）
 	 */
+//	@Override
+//	public ExcelByMapUtil setExcelFilePathIn(String excelFilePathIn) {
+//		super.setExcelFilePathIn(excelFilePathIn);
+//		return this;
+//	}
+
+	/**
+	 * （从磁盘导入文件）
+	 */
 	@Override
-	public ExcelByMapUtil setExcelFilePathIn(String excelFilePathIn) {
-		this.excelFilePathIn = excelFilePathIn;
+	public ExcelByMapUtil createWorkbookByFilePath(String excelFilePathIn) {
+        File file = new File(excelFilePathIn);
+        try {
+			if (!file.exists()) {
+			    logger.error("文件:{} 不存在！创建此文件！"+ excelFilePathIn);
+			    if (!file.createNewFile()) {
+			        throw new IOException("文件创建失败");
+			    }
+			    this.workbook = new XSSFWorkbook();
+			} else {
+			    this.workbook = WorkbookFactory.create(file);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
 		return this;
 	}
 
 	/**
 	 * （导出到磁盘才用到）
 	 */
-	@Override
-	public Workbook createWorkbookByFilePath() {
-		Workbook workbook = null;
-        File file = new File(this.excelFilePathIn);
-        try {
-			if (!file.exists()) {
-			    logger.error("文件:{} 不存在！创建此文件！"+ this.excelFilePathIn);
-			    if (!file.createNewFile()) {
-			        throw new IOException("文件创建失败");
-			    }
-			    workbook = new XSSFWorkbook();
-			} else {
-			    workbook = WorkbookFactory.create(file);
-			}
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-		return workbook;
-	}
+//	@Override
+//	public ExcelByMapUtil setOutFilePath(String outFilePath) {
+//		super.setOutFilePath(outFilePath);
+//		return this;
+//	}
 
 	/**
 	 * （导出到磁盘才用到）
 	 */
 	@Override
-	public ExcelByMapUtil setOutFilePath(String outFilePath) {
-		this.outFilePath = outFilePath;
-    	return this;
-	}
-
-	/**
-	 * （导出到磁盘才用到）
-	 */
-	@Override
-	public void createExcelFileOnDisk() {
-		FileOutputStream fileOutputStream = null;
-    	File file = new File(this.outFilePath);
-        try {
-			if (!file.exists()) {
-			    if (!file.createNewFile()) {
-			        throw new IOException("文件创建失败");
-			    }
-			}
-			fileOutputStream = new FileOutputStream(file);
-			workbook.write(fileOutputStream);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public ExcelByMapUtil createExcelFileOnDisk(String path) {
+		super.createExcelFileOnDisk(path);
+		return this;
 	}
 	
 	
@@ -554,20 +567,7 @@ public class ExcelByMapUtil extends ExcelAbstract{
      */
     @Override
     protected void formatContentCell(Cell cell, int rowIndex, int colIndex,Object value) {
-    	if(value == null) {
-            cell.setCellValue("");
-        }else {
-            // 自适应宽度
-            int cellLength = value.toString().getBytes().length;
-            // excel有列宽限制的 255字符
-            if (cellLength > 125) {
-            	cellLength = 125;
-            } else if (cellLength < 10) {
-            	cellLength = 10;
-            }
-            sheet.setColumnWidth(colIndex, cellLength * 2 * 256);
-        }
-    	cell.setCellStyle(cellStyles[colIndex]);
+    	super.formatContentCell(cell, rowIndex, colIndex, value);
     }
     
     /**
@@ -575,9 +575,14 @@ public class ExcelByMapUtil extends ExcelAbstract{
      */
     @Override
     protected void formatHeadCell(Cell cell, int rowIndex, int colIndex) {
-    	sheet.setColumnWidth(colIndex, 10 * 2 * 256);
-    	setGeneralProperty(cellStyles[colIndex]);
-    	cell.setCellStyle(cellStyles[colIndex]);
+    	super.formatHeadCell(cell, rowIndex, colIndex);
     }
+
+
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
 }
 

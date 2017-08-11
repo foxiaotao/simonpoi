@@ -2,19 +2,24 @@ package simon.demo.core.util.simonexcel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -22,6 +27,8 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.util.Assert;
 
 /**
@@ -40,9 +47,10 @@ public abstract class ExcelAbstract  implements Closeable {
     protected  DateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     protected  int      importStartRow = 0;
     protected  String   sheetName = "Sheet1";
-    protected  String   excelFilePathIn;//导出路径（传统 磁盘的方式 out了）
-
+    
+   /* protected  String   excelFilePathIn;//导出路径（传统 磁盘的方式 out了）
     protected  String   outFilePath;//导出路径（传统 磁盘的方式 out了）
+    */
     protected  Sheet sheet;
     protected  CellStyle[] cellStyles;
 	
@@ -65,46 +73,106 @@ public abstract class ExcelAbstract  implements Closeable {
      * @param inputStream
      * @return
      */
-	public abstract ExcelAbstract setExcelInputStream(InputStream inputStream);
+	public ExcelAbstract setExcelInputStream(InputStream inputStream){
+		try {
+			this.workbook = WorkbookFactory.create(inputStream);
+		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
+			logger.error(e.getMessage());
+		}
+        return this;
+	};
 	/**
 	 * 设置date格式
 	 * @param format
 	 * @return
 	 */
-	public abstract ExcelAbstract setDateFormat(String format);
+	public ExcelAbstract setDateFormat(String dateFormat){
+		this.dateFormat = new SimpleDateFormat(dateFormat);;
+		return this;
+	};
 	/**
 	 * 设置sheet名称
 	 * @param sheetName
 	 * @return
 	 */
-	public abstract ExcelAbstract setSheetName(String sheetName);
+	public ExcelAbstract setSheetName(String sheetName){
+		this.sheetName = sheetName;
+		return this;
+	};
 	/**
 	 * 设置 读 excel 开始的行数，默认值=1
 	 * @param startRow
 	 * @return
 	 */
-	public abstract ExcelAbstract setImportStartRow(int startRow);
+	public ExcelAbstract setImportStartRow(int startRow){
+		if (startRow < 1) {
+            throw new RuntimeException("最小为0");
+        }
+		this.importStartRow = startRow;
+		return this;
+	};
 	/**
 	 * 设置 excel 导入磁盘路径
 	 * @param excelFilePathIn
 	 * @return
 	 */
-	public abstract ExcelAbstract setExcelFilePathIn(String excelFilePathIn);
+	/*public ExcelAbstract setExcelFilePathIn(String excelFilePathIn){
+		this.excelFilePathIn = excelFilePathIn;
+		return this;
+	};*/
 	/**
 	 * 通过 excelFilePathin 的路径来创建excel 源，获取workbook
 	 * @return
 	 */
-	public abstract Workbook createWorkbookByFilePath();
+	public ExcelAbstract createWorkbookByFilePath(String inFilePath){
+		File file = new File(inFilePath);
+        try {
+			if (!file.exists()) {
+			    logger.error("文件:{} 不存在！创建此文件！"+ inFilePath);
+			    if (!file.createNewFile()) {
+			        throw new IOException("文件创建失败");
+			    }
+			    this.workbook = new XSSFWorkbook();
+			} else {
+			    this.workbook = WorkbookFactory.create(file);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return this;
+	};
 	/**
 	 * 设置 保存excel到磁盘的路径
 	 * @param outFilePath
 	 * @return
 	 */
-	public abstract ExcelAbstract setOutFilePath(String outFilePath);
+//	public ExcelAbstract setOutFilePath(String outFilePath){
+//		this.outFilePath = outFilePath;
+//		return this;
+//	};
 	/**
 	 * 将生成的excel 保存到磁盘
 	 */
-	public abstract void createExcelFileOnDisk();
+	public ExcelAbstract createExcelFileOnDisk(String outFilePath){
+		FileOutputStream fileOutputStream = null;
+    	File file = new File(outFilePath);
+        try {
+			if (!file.exists()) {
+			    if (!file.createNewFile()) {
+			        throw new IOException("文件创建失败");
+			    }
+			}
+			fileOutputStream = new FileOutputStream(file);
+			workbook.write(fileOutputStream);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			this.closeWorkbook();
+		}
+        return this;
+	};
 	
 	/**设置模板路径
 	 * @param modelPath
@@ -335,8 +403,40 @@ public abstract class ExcelAbstract  implements Closeable {
 		}
     }
     
-    protected abstract void formatContentCell(Cell cell, int rowIndex, int colIndex, Object value);
+    public Workbook getWorkbook() {
+		return workbook;
+	}
+	public void setWorkbook(Workbook workbook) {
+		this.workbook = workbook;
+	}
+	public ExcelAbstract setDateFormat(DateFormat dateFormat) {
+		this.dateFormat = dateFormat;
+		return this;
+	}
+    
+    protected void formatContentCell(Cell cell, int rowIndex, int colIndex, Object value){
+    	if(value == null) {
+            cell.setCellValue("");
+        }else {
+            // 自适应宽度
+            int cellLength = value.toString().getBytes().length;
+            // excel有列宽限制的 255字符
+            if (cellLength > 125) {
+            	cellLength = 125;
+            } else if (cellLength < 10) {
+            	cellLength = 10;
+            }
+            sheet.setColumnWidth(colIndex, cellLength * 2 * 256);
+        }
+    	cell.setCellStyle(cellStyles[colIndex]);
+    };
 
-    protected abstract void formatHeadCell(Cell cell, int rowIndex, int colIndex);
+    protected void formatHeadCell(Cell cell, int rowIndex, int colIndex){
+    	sheet.setColumnWidth(colIndex, 10 * 2 * 256);
+    	setGeneralProperty(cellStyles[colIndex]);
+    	cell.setCellStyle(cellStyles[colIndex]);
+    };
+	
+	
 
 }

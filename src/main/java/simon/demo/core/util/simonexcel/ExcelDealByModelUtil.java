@@ -27,72 +27,70 @@ public class ExcelDealByModelUtil extends ExcelAbstract {
 		}
 		return cellMapData;
 	}
+
+
+	@Override
+	public ExcelDealByModelUtil setExcelInputStream(InputStream inputStream) {
+		super.setExcelInputStream(inputStream);
+		return this;
+	}
+
+	@Override
+	public ExcelDealByModelUtil setDateFormat(String format) {
+		super.setDateFormat(dateFormat);
+		return this;
+	}
+
+	@Override
+	public ExcelDealByModelUtil setSheetName(String sheetName) {
+		super.setSheetName(sheetName);
+		return this;
+	}
+
+	@Override
+	public ExcelDealByModelUtil setImportStartRow(int startRow) {
+		super.setImportStartRow(startRow);
+		return this;
+	}
+
+//	@Override
+//	public ExcelDealByModelUtil setExcelFilePathIn(String excelFilePathIn) {
+//		super.setExcelFilePathIn(excelFilePathIn);
+//		return this;
+//	}
+
+	@Override
+	public ExcelDealByModelUtil createWorkbookByFilePath(String inFilePath) {
+		super.createWorkbookByFilePath(inFilePath);
+		return this;
+	}
+
+//	@Override
+//	public ExcelDealByModelUtil setOutFilePath(String outFilePath) {
+//		super.setOutFilePath(outFilePath);
+//		return this;
+//	}
+
+	@Override
+	public ExcelDealByModelUtil createExcelFileOnDisk(String path) {
+		super.createExcelFileOnDisk(path);
+		return this;
+	}
+
+	@Override
+	protected void formatContentCell(Cell cell, int rowIndex, int colIndex, Object value) {
+		super.formatContentCell(cell, rowIndex, colIndex, value);
+	}
+
+	@Override
+	protected void formatHeadCell(Cell cell, int rowIndex, int colIndex) {
+		super.formatHeadCell(cell, rowIndex, colIndex);
+	}
 	
 	@Override
 	public void close() throws IOException {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public ExcelAbstract setExcelInputStream(InputStream inputStream) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ExcelAbstract setDateFormat(String format) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ExcelAbstract setSheetName(String sheetName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ExcelAbstract setImportStartRow(int startRow) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ExcelAbstract setExcelFilePathIn(String excelFilePathIn) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Workbook createWorkbookByFilePath() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ExcelAbstract setOutFilePath(String outFilePath) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void createExcelFileOnDisk() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void formatContentCell(Cell cell, int rowIndex, int colIndex, Object value) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void formatHeadCell(Cell cell, int rowIndex, int colIndex) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 
 }

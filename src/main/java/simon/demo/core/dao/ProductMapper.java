@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import simon.demo.core.bean.Product;
 import simon.demo.core.bean.ProductExample;
+import simon.demo.core.bean.R360Rusult;
 
 public interface ProductMapper {
     int countByExample(ProductExample example);
@@ -35,4 +36,6 @@ public interface ProductMapper {
     int updateByPrimaryKeySelective(Product record);
 
     int updateByPrimaryKey(Product record);
+    
+    int updater360status(R360Rusult record);
 }

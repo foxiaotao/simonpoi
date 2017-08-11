@@ -282,4 +282,13 @@
       status = #{status,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <update id="updater360status" parameterType="simon.demo.core.bean.R360Rusult" >
+    update loan_result_r360_1816
+    set 
+<!--     	r360_status = #{r360Status,jdbcType=VARCHAR}, -->
+      created_at = #{createdAt,jdbcType=VARCHAR}
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+  </update>
+  
 </mapper>

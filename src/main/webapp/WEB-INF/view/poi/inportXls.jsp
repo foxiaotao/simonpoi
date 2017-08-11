@@ -53,9 +53,22 @@
 	<h2>-----------excel 模板   end  -----------</h2>
 	
 	
+	<h2>-----------r360-data  -----------</h2>
+	<form action="${ctx}/poi/importByMapUtilR360.do" method="post" enctype="multipart/form-data">
+		<span>用map的方式，导入数据：</span><input type="file" name="uploadfile" />
+		<input type="submit" value="上传"/>
+	</form>
 	
 	
-
+	
+	<form action="${ctx}/r360/pushMqJson.do" method="post" enctype="multipart/form-data">
+		<span>jsonpush_batch：</span><input type="file" name="uploadfile" />
+		<input type="submit" value="上传"/>
+	</form>
+	
+	
+	
+	<h2>-----------r360-data  -----------</h2>
 	
 	
 	<span>作者：小涛</span>
