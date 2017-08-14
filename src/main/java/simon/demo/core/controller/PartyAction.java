@@ -203,7 +203,7 @@ public class PartyAction {
     				String isFlowParty = null;
     				List<PartyMember> entities = new ArrayList<PartyMember>();
     				for (int i = 4; i < physicalNumberOfRows-1; i++) {
-    					row = sheet.getRow(i);
+    					row = sheet.getRow(i); 
     					int j = 0;
     					PartyMember pmm = new PartyMember();
     					pmm.setName(row.getCell(j++).toString());
