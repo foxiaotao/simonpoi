@@ -53,11 +53,6 @@ public class ExcelDealByModelUtil extends ExcelAbstract {
 		return this;
 	}
 
-//	@Override
-//	public ExcelDealByModelUtil setExcelFilePathIn(String excelFilePathIn) {
-//		super.setExcelFilePathIn(excelFilePathIn);
-//		return this;
-//	}
 
 	@Override
 	public ExcelDealByModelUtil createWorkbookByFilePath(String inFilePath) {
@@ -65,15 +60,9 @@ public class ExcelDealByModelUtil extends ExcelAbstract {
 		return this;
 	}
 
-//	@Override
-//	public ExcelDealByModelUtil setOutFilePath(String outFilePath) {
-//		super.setOutFilePath(outFilePath);
-//		return this;
-//	}
-
 	@Override
-	public ExcelDealByModelUtil createExcelFileOnDisk(String path) {
-		super.createExcelFileOnDisk(path);
+	public ExcelDealByModelUtil createExcelFileOnDisk(String path,String fileName) {
+		super.createExcelFileOnDisk(path,fileName);
 		return this;
 	}
 
@@ -88,9 +77,6 @@ public class ExcelDealByModelUtil extends ExcelAbstract {
 	}
 	
 	@Override
-	public void close() throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
+	public void close() throws IOException {}
 
 }

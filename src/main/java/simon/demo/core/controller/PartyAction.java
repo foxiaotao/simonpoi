@@ -306,7 +306,7 @@ public class PartyAction {
     	
     	// 
     	excel.setModelPath(filePath).writeDataByMap(fieldData);
-    	excel.createExcelFileOnDisk("D:\\party_member\\party_member_"+pmm.getName()+".xls");
+    	excel.createExcelFileOnDisk("D:\\party_member","party_member_"+pmm.getName()+".xls");
 		
 	}
 
