@@ -198,6 +198,9 @@ public class PartyAction {
     				DecimalFormat phoneDf = new DecimalFormat("0");
     				int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
     				Row row = null;
+    				String phoneNo;
+    				String isRelation = null;
+    				String isFlowParty = null;
     				List<PartyMember> entities = new ArrayList<PartyMember>();
     				for (int i = 4; i < physicalNumberOfRows-1; i++) {
     					row = sheet.getRow(i);
@@ -211,24 +214,35 @@ public class PartyAction {
     					pmm.setNation(row.getCell(j++).toString());
     					pmm.setBirthday(getStrDate( row.getCell(j++))); 
     					pmm.setEnducational(row.getCell(j++).toString()); 
-    					pmm.setPeoType(row.getCell(j++).toString());//", "人员类别")(row.getCell(j++).toString()); 
-    					pmm.setInDate(getStrDate( row.getCell(j++)));//, "加入党组织日期")(row.getCell(j++).toString()); 
-    					pmm.setTurnDate(getStrDate( row.getCell(j++)));//", "转为正式党员日期")(row.getCell(j++).toString()); 
-    					pmm.setJob(row.getCell(j++).toString());//", "工作岗位")(row.getCell(j++).toString()); 
-    					pmm.setPhone(phoneDf.format(row.getCell(j++).getNumericCellValue()));//", "手机号")(row.getCell(j++).toString()); 
-    					pmm.setHomeTel(row.getCell(j++).toString());//", "固定电话")(row.getCell(j++).toString()); 
-    					pmm.setAddress(row.getCell(j++).toString());//", "家庭住址")(row.getCell(j++).toString()); 
-    					pmm.setPartyStatus(row.getCell(j++).toString());//", "党籍状态")(row.getCell(j++).toString()); 
-    					pmm.setIsRelation(row.getCell(j++).toString());//", "是否为失联党员")(row.getCell(j++).toString()); 
-    					pmm.setNoRelationDate(getStrDate( row.getCell(j++)));//", "失去联系日期")(row.getCell(j++).toString()); 
-    					pmm.setIsFlowParty(row.getCell(j++).toString());//", "是否为流动党员")(row.getCell(j++).toString()); 
-    					pmm.setFlowAddr(row.getCell(j++).toString());//", "外出流向"); 
+    					pmm.setPeoType(row.getCell(j++).toString());//", "人员类别" 
+    					pmm.setInDate(getStrDate( row.getCell(j++)));//, "加入党组织日期"
+    					pmm.setTurnDate(getStrDate( row.getCell(j++)));//", "转为正式党员日期"
+    					pmm.setJob(row.getCell(j++).toString());//", "工作岗位"
+    					phoneNo = phoneDf.format(row.getCell(j++).getNumericCellValue());
+    					pmm.setPhone("0".equals(phoneNo)?"":phoneNo);//", "手机号" 
+    					pmm.setHomeTel(row.getCell(j++).toString());//", "固定电话" 
+    					pmm.setAddress(row.getCell(j++).toString());//", "家庭住址" 
+    					pmm.setPartyStatus(row.getCell(j++).toString());//", "党籍状态"
+    					isRelation = row.getCell(j++).toString();
+    					pmm.setIsRelation(isRelation);//", "是否为失联党员"
+    					if("是".equals(isRelation)){
+    						pmm.setNoRelationDate(getStrDate( row.getCell(j++)));//", "失去联系日期"
+    					}else{
+    						pmm.setNoRelationDate("");
+    						j++;
+    					}
     					
+    					isFlowParty = row.getCell(j++).toString();
+    					pmm.setIsFlowParty(isFlowParty);//", "是否为流动党员"
+    					if("是".equals(isFlowParty)){
+    						pmm.setFlowAddr(row.getCell(j++).toString());//", "外出流向"
+    					}else{
+    						pmm.setFlowAddr("");
+    						j++;
+    					}
     					createExcel(pmm,i,basePath);
     					entities.add(pmm);
 					}
-    				
-    		    	
     				return new ResponseEntity(new ReturnBean(true,"上传成功"), HttpStatus.OK);
     			}else{
     				return new ResponseEntity("上传失败,文件大小超过2M限制", HttpStatus.OK);
@@ -275,8 +289,8 @@ public class PartyAction {
     	rowMap.put(13, excel.fillCellMapData(new Integer[]{5},new String[]{pmm.getAddress()}));
     	rowMap.put(14, excel.fillCellMapData(new Integer[]{3},new String[]{pmm.getPartyStatus()}));
     	rowMap.put(15, excel.fillCellMapData(new Integer[]{3,9},new String[]{pmm.getIsRelation(),pmm.getNoRelationDate()}));
-    	rowMap.put(16, excel.fillCellMapData(new Integer[]{9},new String[]{pmm.getIsRelation(),pmm.getIsFlowParty()}));
-    	rowMap.put(17, excel.fillCellMapData(new Integer[]{4},new String[]{pmm.getIsRelation(),pmm.getFlowAddr()}));
+    	rowMap.put(16, excel.fillCellMapData(new Integer[]{9},new String[]{pmm.getIsFlowParty()}));
+    	rowMap.put(17, excel.fillCellMapData(new Integer[]{4},new String[]{pmm.getFlowAddr()}));
     	
     	fieldData.put("党员基本信息采集表", rowMap);//sheet1数据加入map中
     	
