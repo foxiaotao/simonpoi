@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -73,92 +75,7 @@ public class PartyAction {
         return "poi/excel_party";
     }
 	
-	/**
-	 * @param resquest
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value="/importByMapUtilParty_0.do")
-	public ResponseEntity importByMapUtilParty0(HttpServletRequest resquest,HttpServletResponse response){
-		//初始化表头映射
-		LinkedHashMap<String, String> pm = getPartyMap();
-		try {  
-			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) resquest;  
-			Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-			String xlsName;
-			String[] name;
-			for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {   
-				// 上传文件 
-				MultipartFile mf = entity.getValue();  
-				if(mf.getSize() > 4097152){
-					return new ResponseEntity(new ReturnBean(false,"上传失败,文件大小超过2M限制"), HttpStatus.OK);
-				}
-				xlsName = mf.getOriginalFilename();
-				//文件不能为空
-				Assert.notNull(xlsName);
-				name = xlsName.split("\\.");
-				//验证文件格式
-				if("xls".equals(name[1]) || "xlsx".equals(name[1])){
-					ExcelByMapUtil excelutil = new ExcelByMapUtil();
-					DateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-					excelutil.setDateFormat(sdf);
-					List<PartyMember> list = excelutil.setExcelInputStream(mf.getInputStream()).setPropertyMapping(pm).getEntitiesHasNoHeader(4,PartyMember.class);
-					
-					return new ResponseEntity(new ReturnBean(true,"上传成功"), HttpStatus.OK);
-				}else{
-					return new ResponseEntity("上传失败,文件大小超过2M限制", HttpStatus.OK);
-				}
-			}  
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new ResponseEntity(new ReturnBean(false,"上传成功"), HttpStatus.OK);
-		} 
-		
-		return null;
-	}
-	/**
-	 * @param resquest
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value="/importByAnnoUtilParty.do")
-	public ResponseEntity importByAnnoUtilParty(HttpServletRequest resquest,HttpServletResponse response){
-		//初始化表头映射
-		LinkedHashMap<String, String> pm = getPartyMapChn();
-		try {  
-			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) resquest;  
-			Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-			String xlsName;
-			String[] name;
-			for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {   
-				// 上传文件 
-				MultipartFile mf = entity.getValue();  
-				if(mf.getSize() > 4097152){
-					return new ResponseEntity(new ReturnBean(false,"上传失败,文件大小超过2M限制"), HttpStatus.OK);
-				}
-				xlsName = mf.getOriginalFilename();
-				//文件不能为空
-				Assert.notNull(xlsName);
-				name = xlsName.split("\\.");
-				//验证文件格式
-				if("xls".equals(name[1]) || "xlsx".equals(name[1])){
-					DateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-					ExcelByAnnotationUtil excelIn = new ExcelByAnnotationUtil();
-					excelIn.setDateFormat(sdf).setExcelInputStream(mf.getInputStream()).setImportStartRow(4);
-					List<PartyMember> list = excelIn.getEntities(PartyMember.class);
-					
-					return new ResponseEntity(new ReturnBean(true,"上传成功"), HttpStatus.OK);
-				}else{
-					return new ResponseEntity("上传失败,文件大小超过2M限制", HttpStatus.OK);
-				}
-			}  
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new ResponseEntity(new ReturnBean(false,"上传成功"), HttpStatus.OK);
-		} 
-		
-		return null;
-	}
+
     /**
      * @param resquest
      * @param response
@@ -176,8 +93,7 @@ public class PartyAction {
     		HttpSession httpSession = request.getSession();   
 	    	logger.debug("httpSession.getServletContext():"+httpSession.getServletContext());  
 	    	String basePath = httpSession.getServletContext().getRealPath("/WEB-INF");
-	    	String filePath = basePath+"/excelModel/";
-	    	
+	    	int errorCount = 0;
     		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {   
     			// 上传文件 
     			MultipartFile mf = entity.getValue();  
@@ -194,7 +110,7 @@ public class PartyAction {
     				Workbook workbook = excelutil.setExcelInputStream(mf.getInputStream()).getWorkbook();
     				
     				String sheetNames[] = {"桃花村","古墩村","土地村"};
-    				Sheet sheet = workbook.getSheet("桃花村");
+    				Sheet sheet = workbook.getSheet("党员基本信息汇总表");
     				DecimalFormat phoneDf = new DecimalFormat("0");
     				int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
     				Row row = null;
@@ -240,9 +156,15 @@ public class PartyAction {
     						pmm.setFlowAddr("");
     						j++;
     					}
-    					createExcel(pmm,i,basePath);
-    					entities.add(pmm);
+    					
+    					boolean success = validatePartyMember(pmm);//校验格式
+    					if(!success) {
+    						errorCount++;
+    					}
+    					//createExcel(pmm,i,basePath);
+    					//entities.add(pmm);
 					}
+    				System.out.println("错误数据有： "+errorCount+" 条");
     				return new ResponseEntity(new ReturnBean(true,"上传成功"), HttpStatus.OK);
     			}else{
     				return new ResponseEntity("上传失败,文件大小超过2M限制", HttpStatus.OK);
@@ -256,7 +178,63 @@ public class PartyAction {
     	return null;
     }
     
-    private void createExcel(PartyMember pmm, int i,String basePath) {
+    private boolean validatePartyMember(PartyMember pm) {
+    	if(!isCard(pm.getIdNo())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_的身份证号码不正确");
+    		return false;
+    	}
+    	if(!isPhone(pm.getPhone()) && !isHomePhone(pm.getHomeTel())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_手机号或者座机不对");
+    		return false;
+    	}
+    	return true;
+	}
+
+    /**
+     * 校验身份证信息
+     * @param idNoStr
+     * @return
+     */
+    public boolean isCard(String idNoStr){
+    	Pattern p15 = Pattern.compile("^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$");
+    	//Pattern p18 = Pattern.compile("^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{4}$");
+    	Pattern p18 = Pattern.compile("^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$");
+    	return p15.matcher(idNoStr).matches() || p18.matcher(idNoStr).matches();
+    }
+    /**
+     * 电话号码
+     * @param idNoStr
+     * @return
+     */
+    public boolean isPhone(String phoneStr){
+    	String phoneReg = "^((13[0-9])|(14[5,7])|(15[^4,\\D])|(17[0,3,6,7,8])|(18[0-9])|(19[8]))\\d{8}$";
+    	Pattern phonePattern = Pattern.compile(phoneReg);
+    	return phonePattern.matcher(phoneStr).matches();
+    }
+    /**
+     * 电话号码
+     * @param idNoStr
+     * @return
+     */
+    public boolean isHomePhone(String phoneStr){
+    	//String homePhoneReg = "(\\(?(010|021|022|023|024|025|026|027|028|029|852)?\\)?-?\\d{8})|(\\(?(0[3-9][0-9]{2})?\\)?-?\\d{7,8})";
+    	String homePhoneReg = "(\\(?(010|021|022|023|024|025|026|027|028|029|852)?\\)?-?\\d{8})|(\\(?(0[3-9][0-9]{2})?\\)?-?\\d{7})";
+    	Pattern phonePattern = Pattern.compile(homePhoneReg);
+    	return phonePattern.matcher(phoneStr).matches();
+    }
+    /**
+     * 邮箱验证
+     * @param idNoStr
+     * @return
+     */
+    public boolean isEmail(String emailStr){
+    	String emailPatternMatcher = "\\b^['_a-z0-9-\\+]+(\\.['_a-z0-9-\\+]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*\\.([a-z]{2}|aero|arpa|asia|biz|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|nato|net|org|pro|tel|travel|xxx)$\\b";
+    	Pattern phonePattern = Pattern.compile(emailPatternMatcher);
+    	return phonePattern.matcher(emailStr).matches();
+    }
+
+    
+	private void createExcel(PartyMember pmm, int i,String basePath) {
     	String filePath = basePath+"/excelModel/single_party_member.xls";
     	ExcelDealByModelUtil excel = new ExcelDealByModelUtil();
     	//data
