@@ -4,6 +4,27 @@ import java.util.regex.Pattern;
 
 public class RegexUtil {
 
+	/**
+	 * 
+	 * @param targetStr
+	 * @param regexMatchPattern
+	 * @return 是否正则匹配
+	 */
+    public static boolean isMatches(String targetStr,String regexMatchPattern){
+    	Pattern pattern = Pattern.compile(regexMatchPattern);
+    	return pattern.matcher(targetStr).matches();
+    }
+    /**
+     * 
+     * @param targetStr
+     * @param regexMatchPattern
+     * @return 是否正则匹配
+     */
+    public static boolean isFind(String targetStr,String regexMatchPattern){
+    	Pattern pattern = Pattern.compile(regexMatchPattern);
+    	return pattern.matcher(targetStr).find();
+    }
+	
     /**
      * 校验身份证信息
      * @param idNoStr

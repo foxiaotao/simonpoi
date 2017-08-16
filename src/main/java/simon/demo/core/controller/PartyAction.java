@@ -51,6 +51,7 @@ import simon.demo.core.bean.RandFFutrueBean;
 import simon.demo.core.bean.ReturnBean;
 import simon.demo.core.dao.ProductMapper;
 import simon.demo.core.service.ProductService;
+import simon.demo.core.util.Constants;
 import simon.demo.core.util.DateUtil;
 import simon.demo.core.util.RegexUtil;
 import simon.demo.core.util.simonexcel.ExcelByAnnotationUtil;
@@ -114,7 +115,7 @@ public class PartyAction {
     				Workbook workbook = excelutil.setExcelInputStream(mf.getInputStream()).getWorkbook();
     				
     				String sheetNames[] = {"桃花村","古墩村","土地村"};
-    				Sheet sheet = workbook.getSheet("党员基本信息汇总表");
+    				Sheet sheet = workbook.getSheetAt(0);
     				DecimalFormat phoneDf = new DecimalFormat("0");
     				int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
     				Row row = null;
@@ -122,6 +123,7 @@ public class PartyAction {
     				String isRelation = null;
     				String isFlowParty = null;
     				List<PartyMember> entities = new ArrayList<PartyMember>();
+    				StringBuffer stringBuf = new StringBuffer();
     				for (int i = 4; i < physicalNumberOfRows-1; i++) {
     					row = sheet.getRow(i); 
     					int j = 0;
@@ -161,15 +163,18 @@ public class PartyAction {
     						j++;
     					}
     					
-    					boolean success = validatePartyMember(pmm);//校验格式
+    					boolean success = validatePartyMember(pmm, stringBuf);//校验格式
     					if(!success) {
     						errorCount++;
     					}
-    					createExcel(pmm,i,basePath);
-    					//entities.add(pmm);
+    					entities.add(pmm);
 					}
-    				System.out.println("错误数据有： "+errorCount+" 条");
-    				return new ResponseEntity(new ReturnBean(true,"上传成功"), HttpStatus.OK);
+    				if(errorCount == 0) {
+    					for (PartyMember partyMember : entities) {
+    						createExcel(partyMember,basePath);
+						}
+    				}
+    				return new ResponseEntity(new ReturnBean(true,"错误条数="+errorCount+",  "+stringBuf.toString()), HttpStatus.OK);
     			}else{
     				return new ResponseEntity("上传失败,文件大小超过2M限制", HttpStatus.OK);
     			}
@@ -182,38 +187,134 @@ public class PartyAction {
     	return null;
     }
     
-    private boolean validatePartyMember(PartyMember pm) {
+    private boolean validatePartyMember(PartyMember pm, StringBuffer stringBuf) {
+    	// name
+    	if(StringUtils.isBlank(pm.getName())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_的姓名不正确");
+    		stringBuf.append("[党员信息校验] "+pm.getName()+"_的姓名不正确");
+    		return false;
+    	}
+    	// zhibu
+    	if(!RegexUtil.isMatches(pm.getZhibu(), Constants.REX_MATCH_STRING_PARTY_ZHI_BU)){
+    		logger.error("[党员信息校验] "+pm.getName()+"_的支部信息不正确");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_的支部信息不正确");
+    		return false;
+    	}
+    	// id_no
     	if(!RegexUtil.isCard(pm.getIdNo())) {
     		logger.error("[党员信息校验] "+pm.getName()+"_的身份证号码不正确");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_的身份证号码不正确");
     		return false;
     	}
-    	if(!RegexUtil.isPhone(pm.getPhone()) && !RegexUtil.isHomePhone(pm.getHomeTel())) {
-    		logger.error("[党员信息校验] "+pm.getName()+"_手机号或者座机不对");
+    	// gender
+    	if(!("男".equals(pm.getGender()) || "女".equals(pm.getGender()))) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_的性别不正确");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_的性别不正确");
     		return false;
     	}
+    	// Nation
+    	if(StringUtils.isBlank(pm.getNation())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_的民族不正确");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_的民族不正确");
+    		return false;
+    	}
+    	// Birthday
     	if(!RegexUtil.isChnDate(pm.getBirthday())) {
     		logger.error("[党员信息校验] "+pm.getName()+"_出生日期不对");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_出生日期不对");
     		return false;
     	}
+    	// 学历
+    	if(StringUtils.isBlank(pm.getEnducational())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_学历不对");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_学历不对");
+    		return false;
+    	}
+    	// 人员类别
+    	if(StringUtils.isBlank(pm.getPeoType())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_人员类别不对");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_人员类别不对");
+    		return false;
+    	}
+    	// inDate
     	if(!RegexUtil.isChnDate(pm.getInDate())) {
     		logger.error("[党员信息校验] "+pm.getName()+"_入党日期不对");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_入党日期不对");
     		return false;
     	}
+    	// turnDate
     	if(!RegexUtil.isChnDate(pm.getTurnDate())) {
     		logger.error("[党员信息校验] "+pm.getName()+"_转正日期不对");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_转正日期不对");
     		return false;
     	}
+    	// inDate < turnDate
     	try {
 			if(!isBeforeForyyyyMMddChn(pm.getInDate(), pm.getTurnDate())) {
 				logger.error("[党员信息校验] "+pm.getName()+"_入党日期大于转正日期");
+				stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_入党日期大于转正日期");
 	    		return false;
 			}
 		} catch (ParseException e) {
 			logger.error("[党员信息校验] "+pm.getName()+"_入党日期，转正日期转Date错误",e);
+			stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_入党日期，转正日期转Date错误");
 			return false;
 		}
-    	if(StringUtils.isNotBlank(pm.getNoRelationDate()) && !RegexUtil.isChnDate(pm.getNoRelationDate())) {
-    		logger.error("[党员信息校验] "+pm.getName()+"_失联日期不对");
+    	// 电话
+    	if(!RegexUtil.isPhone(pm.getPhone()) && !RegexUtil.isHomePhone(pm.getHomeTel())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_手机号或者座机不对");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_手机号或者座机不对");
+    		return false;
+    	}
+    	// 家庭住址
+    	if(StringUtils.isBlank(pm.getAddress())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_家庭住址不对");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_家庭住址不对");
+    		return false;
+    	}
+    	// 党籍状态(正常)
+    	if(StringUtils.isBlank(pm.getPartyStatus())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_党籍状态不对");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_党籍状态不对");
+    		return false;
+    	}
+    	// 失联
+    	if("是".equals(pm.getIsRelation())) {
+    		if(!RegexUtil.isChnDate(pm.getNoRelationDate())) {
+        		logger.error("[党员信息校验] "+pm.getName()+"_失联日期不对");
+        		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_失联日期不对");
+        		return false;
+        	}
+    	}else if("否".equals(pm.getIsRelation())){
+    		//没有失联不做处理
+    		if(StringUtils.isNotBlank(pm.getNoRelationDate())) {
+        		logger.error("[党员信息校验] "+pm.getName()+"_失联日期不对");
+        		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_失联日期不对");
+        		return false;
+        	}
+    	}else{
+    		if(!RegexUtil.isChnDate(pm.getNoRelationDate())) {
+        		logger.error("[党员信息校验] "+pm.getName()+"_是否失联不对");
+        		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_是否失联不对");
+        		return false;
+        	}
+    	}
+    	//流动
+    	if("是".equals(pm.getIsFlowParty())) {
+    		if(StringUtils.isBlank(pm.getFlowAddr())) {
+    			logger.error("[党员信息校验] "+pm.getName()+"_流动方向不对");
+        		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_流动方向不对");
+        		return false;
+    		}
+    	} else if("否".equals(pm.getIsFlowParty())) {
+    		if(StringUtils.isNotBlank(pm.getFlowAddr())) {
+    			logger.error("[党员信息校验] "+pm.getName()+"_流动方向不对");
+        		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_流动方向不对");
+        		return false;
+    		}
+    	} else {
+			logger.error("[党员信息校验] "+pm.getName()+"_是否流动不对");
+    		stringBuf.append("#").append("[党员信息校验] "+pm.getName()+"_是否流动不对");
     		return false;
     	}
     	return true;
@@ -242,7 +343,7 @@ public class PartyAction {
 	}
     
     
-	private void createExcel(PartyMember pmm, int i,String basePath) {
+	private void createExcel(PartyMember pmm, String basePath) {
     	String filePath = basePath+"/excelModel/single_party_member.xls";
     	ExcelDealByModelUtil excel = new ExcelDealByModelUtil();
     	//data
