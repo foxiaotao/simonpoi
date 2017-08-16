@@ -169,6 +169,11 @@ public abstract class ExcelAbstract  implements Closeable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
+			try {
+				fileOutputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			this.closeWorkbook();
 		}
         return this;

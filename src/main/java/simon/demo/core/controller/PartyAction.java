@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -49,6 +51,8 @@ import simon.demo.core.bean.RandFFutrueBean;
 import simon.demo.core.bean.ReturnBean;
 import simon.demo.core.dao.ProductMapper;
 import simon.demo.core.service.ProductService;
+import simon.demo.core.util.DateUtil;
+import simon.demo.core.util.RegexUtil;
 import simon.demo.core.util.simonexcel.ExcelByAnnotationUtil;
 import simon.demo.core.util.simonexcel.ExcelByMapUtil;
 import simon.demo.core.util.simonexcel.ExcelDealByModelUtil;
@@ -161,7 +165,7 @@ public class PartyAction {
     					if(!success) {
     						errorCount++;
     					}
-    					//createExcel(pmm,i,basePath);
+    					createExcel(pmm,i,basePath);
     					//entities.add(pmm);
 					}
     				System.out.println("错误数据有： "+errorCount+" 条");
@@ -179,60 +183,64 @@ public class PartyAction {
     }
     
     private boolean validatePartyMember(PartyMember pm) {
-    	if(!isCard(pm.getIdNo())) {
+    	if(!RegexUtil.isCard(pm.getIdNo())) {
     		logger.error("[党员信息校验] "+pm.getName()+"_的身份证号码不正确");
     		return false;
     	}
-    	if(!isPhone(pm.getPhone()) && !isHomePhone(pm.getHomeTel())) {
+    	if(!RegexUtil.isPhone(pm.getPhone()) && !RegexUtil.isHomePhone(pm.getHomeTel())) {
     		logger.error("[党员信息校验] "+pm.getName()+"_手机号或者座机不对");
+    		return false;
+    	}
+    	if(!RegexUtil.isChnDate(pm.getBirthday())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_出生日期不对");
+    		return false;
+    	}
+    	if(!RegexUtil.isChnDate(pm.getInDate())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_入党日期不对");
+    		return false;
+    	}
+    	if(!RegexUtil.isChnDate(pm.getTurnDate())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_转正日期不对");
+    		return false;
+    	}
+    	try {
+			if(!isBeforeForyyyyMMddChn(pm.getInDate(), pm.getTurnDate())) {
+				logger.error("[党员信息校验] "+pm.getName()+"_入党日期大于转正日期");
+	    		return false;
+			}
+		} catch (ParseException e) {
+			logger.error("[党员信息校验] "+pm.getName()+"_入党日期，转正日期转Date错误",e);
+			return false;
+		}
+    	if(StringUtils.isNotBlank(pm.getNoRelationDate()) && !RegexUtil.isChnDate(pm.getNoRelationDate())) {
+    		logger.error("[党员信息校验] "+pm.getName()+"_失联日期不对");
     		return false;
     	}
     	return true;
 	}
 
-    /**
-     * 校验身份证信息
-     * @param idNoStr
-     * @return
-     */
-    public boolean isCard(String idNoStr){
-    	Pattern p15 = Pattern.compile("^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$");
-    	//Pattern p18 = Pattern.compile("^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{4}$");
-    	Pattern p18 = Pattern.compile("^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$");
-    	return p15.matcher(idNoStr).matches() || p18.matcher(idNoStr).matches();
-    }
-    /**
-     * 电话号码
-     * @param idNoStr
-     * @return
-     */
-    public boolean isPhone(String phoneStr){
-    	String phoneReg = "^((13[0-9])|(14[5,7])|(15[^4,\\D])|(17[0,3,6,7,8])|(18[0-9])|(19[8]))\\d{8}$";
-    	Pattern phonePattern = Pattern.compile(phoneReg);
-    	return phonePattern.matcher(phoneStr).matches();
-    }
-    /**
-     * 电话号码
-     * @param idNoStr
-     * @return
-     */
-    public boolean isHomePhone(String phoneStr){
-    	//String homePhoneReg = "(\\(?(010|021|022|023|024|025|026|027|028|029|852)?\\)?-?\\d{8})|(\\(?(0[3-9][0-9]{2})?\\)?-?\\d{7,8})";
-    	String homePhoneReg = "(\\(?(010|021|022|023|024|025|026|027|028|029|852)?\\)?-?\\d{8})|(\\(?(0[3-9][0-9]{2})?\\)?-?\\d{7})";
-    	Pattern phonePattern = Pattern.compile(homePhoneReg);
-    	return phonePattern.matcher(phoneStr).matches();
-    }
-    /**
-     * 邮箱验证
-     * @param idNoStr
-     * @return
-     */
-    public boolean isEmail(String emailStr){
-    	String emailPatternMatcher = "\\b^['_a-z0-9-\\+]+(\\.['_a-z0-9-\\+]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*\\.([a-z]{2}|aero|arpa|asia|biz|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|nato|net|org|pro|tel|travel|xxx)$\\b";
-    	Pattern phonePattern = Pattern.compile(emailPatternMatcher);
-    	return phonePattern.matcher(emailStr).matches();
-    }
 
+	/**
+	 * For yyyy年MM月dd
+	 * 比较startDate是否在endDate前
+	 * 相等时，视为true
+	 * @param startDate
+	 * @param endDate
+	 * @throws ParseException 
+	 */
+	public static boolean isBeforeForyyyyMMddChn(String startDate, String endDate) throws ParseException {
+		
+		String defaultDatePattern3 = "yyyy年MM月dd日";
+		if (startDate.equals(endDate)) {
+			if(DateUtil.parseDate(startDate, defaultDatePattern3).before(DateUtil.parseDate("1977年8月11日", defaultDatePattern3))
+					&& DateUtil.parseDate("1969年4月1日", defaultDatePattern3).before(DateUtil.parseDate(startDate, defaultDatePattern3))) {
+				return true;
+			}
+			return false;
+		}
+		return DateUtil.parseDate(startDate, defaultDatePattern3).before(DateUtil.parseDate(endDate, defaultDatePattern3));//yyyy-MM-dd HH:mm:ss
+	}
+    
     
 	private void createExcel(PartyMember pmm, int i,String basePath) {
     	String filePath = basePath+"/excelModel/single_party_member.xls";

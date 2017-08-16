@@ -519,6 +519,20 @@ public class DateUtil {
 		}
 		return parseDate(startDate).before(parseDate(endDate));//yyyy-MM-dd HH:mm:ss
 	}
+	/**
+	 * For yyyy年MM月dd
+	 * 比较startDate是否在endDate前
+	 * 相等时，视为true
+	 * @param startDate
+	 * @param endDate
+	 * @throws ParseException 
+	 */
+	public static boolean isBeforeForyyyyMMddChn(String startDate, String endDate) throws ParseException {
+		if (startDate.equals(endDate)) {
+			return true;
+		}
+		return parseDate(startDate, defaultDatePattern3).before(parseDate(endDate, defaultDatePattern3));//yyyy-MM-dd HH:mm:ss
+	}
 	
 	
 	/**
