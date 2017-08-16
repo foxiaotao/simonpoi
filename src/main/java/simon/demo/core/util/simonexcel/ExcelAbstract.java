@@ -153,14 +153,21 @@ public abstract class ExcelAbstract  implements Closeable {
 	/**
 	 * 将生成的excel 保存到磁盘
 	 */
-	public ExcelAbstract createExcelFileOnDisk(String outFilePath){
+	public ExcelAbstract createExcelFileOnDisk(String outFilePath,String fileName){
 		FileOutputStream fileOutputStream = null;
-    	File file = new File(outFilePath);
+    	File fileDir = new File(outFilePath);
         try {
-			if (!file.exists()) {
-			    if (!file.createNewFile()) {
-			        throw new IOException("文件创建失败");
+			if (!fileDir.exists()) {
+			    if (!fileDir.mkdirs()) {
+			        throw new IOException("文件夹"+outFilePath+"创建失败");
 			    }
+			}
+			File file = new File(outFilePath,fileName);
+			if(!file.exists()){
+				if (!file.createNewFile()) {
+			        throw new IOException("文件"+fileName+"创建失败");
+			    }
+				
 			}
 			fileOutputStream = new FileOutputStream(file);
 			workbook.write(fileOutputStream);

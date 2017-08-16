@@ -123,7 +123,7 @@ public class PartyAction {
     				String isFlowParty = null;
     				List<PartyMember> entities = new ArrayList<PartyMember>();
     				for (int i = 4; i < physicalNumberOfRows-1; i++) {
-    					row = sheet.getRow(i);
+    					row = sheet.getRow(i); 
     					int j = 0;
     					PartyMember pmm = new PartyMember();
     					pmm.setName(row.getCell(j++).toString());
@@ -292,7 +292,7 @@ public class PartyAction {
     	
     	// 
     	excel.setModelPath(filePath).writeDataByMap(fieldData);
-    	excel.createExcelFileOnDisk("D:\\party_member\\party_member_"+pmm.getName()+".xls");
+    	excel.createExcelFileOnDisk("D:\\party_member","party_member_"+pmm.getName()+".xls");
 		
 	}
 
