@@ -73,16 +73,6 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 			super.setImportStartRow(startRow);
 	        return this;
 	    }
-	    /**
-	     * 传入excel路径获取excel流（传统方式）
-	     * @param excelFilePath
-	     * @throws IOException
-	     */
-//		@Override
-//	    public ExcelByAnnotationUtil setExcelFilePathIn(String excelFilePathIn){
-//	        super.setExcelFilePathIn(excelFilePathIn);
-//	        return this;
-//	    };
 	    
 	    /**
 	     * 创建工作簿（excelFilePath的形式）
@@ -242,16 +232,6 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 	//++++++++++++++++++++++++++++++++++++++++++====导出====+++++++++++++++++++++++++++++++++++++++++++
 	    
 	    
-	    /**
-	     * 如果文件 需要保存在 磁盘  调用
-	     * @param outFilePath
-	     * @return
-	     */
-//	    @Override
-//	    public ExcelByAnnotationUtil setOutFilePath(String outFilePath){
-//	    	super.setOutFilePath(outFilePath);
-//	    	return this;
-//	    }
 	    
 	    
 	    /**
@@ -327,8 +307,8 @@ public class ExcelByAnnotationUtil extends ExcelAbstract{
 	     * 将生成的excel 保存在磁盘 outFilePath 磁盘路径
 	     */
 	    @Override
-	    public ExcelByAnnotationUtil createExcelFileOnDisk(String path){
-	    	super.createExcelFileOnDisk(path);
+	    public ExcelByAnnotationUtil createExcelFileOnDisk(String path,String fileName){
+	    	super.createExcelFileOnDisk(path,fileName);
 	    	return this;
 	    }
 	    

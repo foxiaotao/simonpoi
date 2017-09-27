@@ -510,15 +510,6 @@ public class ExcelByMapUtil extends ExcelAbstract{
 	}
 
 	/**
-	 * 设置导出路径（导出到磁盘才用到）
-	 */
-//	@Override
-//	public ExcelByMapUtil setExcelFilePathIn(String excelFilePathIn) {
-//		super.setExcelFilePathIn(excelFilePathIn);
-//		return this;
-//	}
-
-	/**
 	 * （从磁盘导入文件）
 	 */
 	@Override
@@ -540,27 +531,15 @@ public class ExcelByMapUtil extends ExcelAbstract{
 		return this;
 	}
 
-	/**
-	 * （导出到磁盘才用到）
-	 */
-//	@Override
-//	public ExcelByMapUtil setOutFilePath(String outFilePath) {
-//		super.setOutFilePath(outFilePath);
-//		return this;
-//	}
 
 	/**
 	 * （导出到磁盘才用到）
 	 */
 	@Override
-	public ExcelByMapUtil createExcelFileOnDisk(String path) {
-		super.createExcelFileOnDisk(path);
+	public ExcelByMapUtil createExcelFileOnDisk(String path,String fileName) {
+		super.createExcelFileOnDisk(path,fileName);
 		return this;
 	}
-	
-	
-	
-   
 	
     /**
      *     需要子类实现抽象方法，目的每个导出所需样式 可 个性化配置，excel主体的样式
