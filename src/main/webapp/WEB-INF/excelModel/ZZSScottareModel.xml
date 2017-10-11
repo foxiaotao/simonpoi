@@ -1,0 +1,673 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Created>2006-09-16T00:00:00Z</Created>
+  <LastSaved>2016-06-15T06:02:54Z</LastSaved>
+  <Version>15.0</Version>
+ </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+  <RemovePersonalInformation/>
+  <PixelsPerInch>96</PixelsPerInch>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>18180</WindowHeight>
+  <WindowWidth>35500</WindowWidth>
+  <WindowTopX>240</WindowTopX>
+  <WindowTopY>460</WindowTopY>
+  <TabRatio>600</TabRatio>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="宋体" x:CharSet="134" ss:Size="11" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s62">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+  </Style>
+  <Style ss:ID="s64">
+   <Alignment ss:Vertical="Bottom"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="首页">
+  <Table ss:ExpandedColumnCount="36" ss:ExpandedRowCount="55" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="45" ss:DefaultRowHeight="14">
+   <Row>
+    <Cell><Data ss:Type="String">附件1                                                                增 值 税 纳 税 申 报 表</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">（一般纳税人适用）</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">    根据国家税收法律法规及增值税相关规定制定本表。纳税人不论有无销售额，均应按税务机关核定的纳税期限填写本表，并向当地税务机关申报。</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="7" ss:StyleID="s64"><PhoneticText
+      xmlns="urn:schemas-microsoft-com:office:excel">zhi</PhoneticText><Data
+      ss:Type="String">税款所属时间：自 ${beginDate} 至 ${endDate}</Data></Cell>
+    <Cell ss:Index="18"><Data ss:Type="String">填表日期：${date}</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">金额单位：元至角分</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">纳税人识别号</Data></Cell>
+    <Cell ss:Index="6"><Data ss:Type="String">业务系统的标识</Data></Cell>
+    <Cell ss:Index="28"><Data ss:Type="String">所属行业：</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">纳税人名称</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">（公章）</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">法定代表人姓名</Data></Cell>
+    <Cell ss:Index="16"><Data ss:Type="String">${user}</Data></Cell>
+    <Cell ss:Index="22"><Data ss:Type="String">注册地址</Data></Cell>
+    <Cell><Data ss:Type="String">${address}</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">生产经营地址</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">开户银行及账号</Data></Cell>
+    <Cell ss:Index="17"><Data ss:Type="String">登记注册类型</Data></Cell>
+    <Cell ss:Index="35"><Data ss:Type="String">电话号码</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">项     目</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">栏次</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">一般项目</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">即征即退项目</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="19"><Data ss:Type="String">本月数</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">本年累计</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">本月数</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">本年累计</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">销售额</Data></Cell>
+    <Cell><Data ss:Type="String">（一）按适用税率计税销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1第9列第1至5行之和-第9列第6、7行之和</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">附1第9列第6、7行之和</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">其中：应税货物销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">2</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">按适用税率计算增值税的应税货物的销售额</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">      应税劳务销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">3</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">按适用税率计算增值税的应税劳务的销售额</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">      纳税检查调整的销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">4</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1第7列第1至5行之和</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">享受增值税即征即退政策的货物、劳务和服务、不动产、无形资产，经纳税检查属于偷税的，不填入“即征即退项目”列，而应填入“一般项目”列</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">（二）按简易办法计税销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">5</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1第9列第8至13b行之和-第9列第14、15行之和</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">附1第9列第14、15行之和。</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">其中：纳税检查调整的销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">6</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">填写纳税人因税务、财政、审计部门检查，并按简易计税方法在本期计算调整的销售额。</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">享受增值税即征即退政策的货物、劳务和服务、不动产、无形资产，经纳税检查属于偷税的，不填入“即征即退项目”列，而应填入“一般项目”列。</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">（三）免、抵、退办法出口销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">7</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1第9列第16、17行之和</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">（四）免税销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">8</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1第9列第18、19行之和</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">其中：免税货物销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">9</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">免征增值税的货物销售额及适用零税率的货物销售额，但零税率的销售额中不包括适用免、抵、退税办法出口货物的销售额</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">            免税劳务销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">10</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">免征增值税的劳务销售额及适用零税率的劳务销售额，但零税率的销售额中不包括适用免、抵、退税办法的劳务的销售额</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">税款计算</Data></Cell>
+    <Cell><Data ss:Type="String">销项税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">11</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1（第10列第1、3行之和-第10列第6行）+（第14列第2、4、5行之和-第14列第7行）</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">附1第10列第6行+第14列第7行</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">进项税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">12</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">一般+即征即税=附2第12栏“税额”</Data></Cell>
+   </Row>
+   <Row ss:Height="364">
+    <Cell ss:Index="2"><Data ss:Type="String">上期留抵税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">13</Data></Cell>
+    <Cell ss:Index="19" ss:StyleID="s62"><Data ss:Type="String">1、第一期填0；&#13;&#13;2、第二期以后填上期第20栏“期末留抵税额”“一般项目”列“本月数”</Data></Cell>
+    <Cell ss:Index="26" ss:StyleID="s62"><Data ss:Type="String">1、第一期填第20栏“期末留抵税额”“一般货物、劳务和应税服务”列“本月数”；&#13;&#13;2、第二期以后填上期第20栏“期末留抵税额”“一般项目”列“本年累计”</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">进项税额转出</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">14</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">免、抵、退应退税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">15</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">按适用税率计算的纳税检查应补缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">16</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">应抵扣税额合计</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">17=12+13-14-15+16</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">实际抵扣税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">18（如17&lt;11，则为17，否则为11）</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">应纳税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">19=11-18</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">期末留抵税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">20=17-18</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">简易计税办法计算的应纳税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">21</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">按简易计税办法计算的纳税检查应补缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">22</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">应纳税额减征额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">23</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">应纳税额合计</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">24=19+21-23</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">税款缴纳</Data></Cell>
+    <Cell><Data ss:Type="String">期初未缴税额（多缴为负数）</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">25</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">实收出口开具专用缴款书退税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">26</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">本期已缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">27=28+29+30+31</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">①分次预缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">28</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">②出口开具专用缴款书预缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">29</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">③本期缴纳上期应纳税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">30</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">④本期缴纳欠缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">31</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">期末未缴税额（多缴为负数）</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">32=24+25+26-27</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">其中：欠缴税额（≥0）</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">33=25+26-27</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">本期应补(退)税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">34＝24-28-29</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">即征即退实际退税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">35</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">期初未缴查补税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">36</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">本期入库查补税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">37</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">期末未缴查补税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">38=16+22+36-37</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">授权声明</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">      如果你已委托代理人申报，请填写下列资料：</Data></Cell>
+    <Cell ss:Index="22"><Data ss:Type="String">申报人声明</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="3"><Data ss:Type="String">      为代理一切税务事宜，现授权                                                                </Data></Cell>
+    <Cell ss:Index="24"><Data ss:Type="String">    本纳税申报表是根据国家税收法律法规及相关规定填报的，我确定它是真实的、可靠的、完整的。</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="3"><Data ss:Type="String">（地址）                                             为本纳税人的代理申报人，任何与本</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="3"><Data ss:Type="String">申报表有关的往来文件，都可寄予此人。</Data></Cell>
+   </Row>
+   <Row ss:Index="53">
+    <Cell ss:Index="3"><Data ss:Type="String">                                                                                授权人签字：</Data></Cell>
+    <Cell ss:Index="15"><Data ss:Type="String">${authPeo}</Data></Cell>
+    <Cell ss:Index="24"><Data ss:Type="String">                                                                           声明人签字：</Data></Cell>
+   </Row>
+   <Row ss:Index="55">
+    <Cell><Data ss:Type="String">主管税务机关：</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">接收人：</Data></Cell>
+    <Cell><Data ss:Type="String">${report}</Data></Cell>
+    <Cell ss:Index="29"><Data ss:Type="String">      接收日期：</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <Print>
+    <ValidPrinterInfo/>
+    <PaperSizeIndex>9</PaperSizeIndex>
+    <HorizontalResolution>180</HorizontalResolution>
+    <VerticalResolution>180</VerticalResolution>
+   </Print>
+   <Zoom>225</Zoom>
+   <PageLayoutZoom>225</PageLayoutZoom>
+   <Selected/>
+   <TopRowVisible>43</TopRowVisible>
+   <LeftColumnVisible>6</LeftColumnVisible>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>53</ActiveRow>
+     <ActiveCol>19</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet2">
+  <Table ss:ExpandedColumnCount="36" ss:ExpandedRowCount="55" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="45" ss:DefaultRowHeight="14">
+   <Row>
+    <Cell><Data ss:Type="String">附件1                                                                增 值 税 纳 税 申 报 表</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">（一般纳税人适用）</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">    根据国家税收法律法规及增值税相关规定制定本表。纳税人不论有无销售额，均应按税务机关核定的纳税期限填写本表，并向当地税务机关申报。</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="7" ss:StyleID="s64"><Data ss:Type="String">税款所属时间：自      年      月       日至       年       月       日</Data></Cell>
+    <Cell ss:Index="18"><Data ss:Type="String">填表日期：    年    月    日</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">金额单位：元至角分</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">纳税人识别号</Data></Cell>
+    <Cell ss:Index="6"><Data ss:Type="String">业务系统的标识</Data></Cell>
+    <Cell ss:Index="28"><Data ss:Type="String">所属行业：</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">纳税人名称</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">（公章）</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">法定代表人姓名</Data></Cell>
+    <Cell ss:Index="22"><Data ss:Type="String">注册地址</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">生产经营地址</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">开户银行及账号</Data></Cell>
+    <Cell ss:Index="17"><Data ss:Type="String">登记注册类型</Data></Cell>
+    <Cell ss:Index="35"><Data ss:Type="String">电话号码</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">项     目</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">栏次</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">一般项目</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">即征即退项目</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="19"><Data ss:Type="String">本月数</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">本年累计</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">本月数</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">本年累计</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">销售额</Data></Cell>
+    <Cell><Data ss:Type="String">（一）按适用税率计税销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1第9列第1至5行之和-第9列第6、7行之和</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">附1第9列第6、7行之和</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">其中：应税货物销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">2</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">按适用税率计算增值税的应税货物的销售额</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">      应税劳务销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">3</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">按适用税率计算增值税的应税劳务的销售额</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">      纳税检查调整的销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">4</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1第7列第1至5行之和</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">享受增值税即征即退政策的货物、劳务和服务、不动产、无形资产，经纳税检查属于偷税的，不填入“即征即退项目”列，而应填入“一般项目”列</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">（二）按简易办法计税销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">5</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1第9列第8至13b行之和-第9列第14、15行之和</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">附1第9列第14、15行之和。</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">其中：纳税检查调整的销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">6</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">填写纳税人因税务、财政、审计部门检查，并按简易计税方法在本期计算调整的销售额。</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">享受增值税即征即退政策的货物、劳务和服务、不动产、无形资产，经纳税检查属于偷税的，不填入“即征即退项目”列，而应填入“一般项目”列。</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">（三）免、抵、退办法出口销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">7</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1第9列第16、17行之和</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">（四）免税销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">8</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1第9列第18、19行之和</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">其中：免税货物销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">9</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">免征增值税的货物销售额及适用零税率的货物销售额，但零税率的销售额中不包括适用免、抵、退税办法出口货物的销售额</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">            免税劳务销售额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">10</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">免征增值税的劳务销售额及适用零税率的劳务销售额，但零税率的销售额中不包括适用免、抵、退税办法的劳务的销售额</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">税款计算</Data></Cell>
+    <Cell><Data ss:Type="String">销项税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">11</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">附1（第10列第1、3行之和-第10列第6行）+（第14列第2、4、5行之和-第14列第7行）</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">附1第10列第6行+第14列第7行</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">进项税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">12</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">一般+即征即税=附2第12栏“税额”</Data></Cell>
+   </Row>
+   <Row ss:Height="364">
+    <Cell ss:Index="2"><Data ss:Type="String">上期留抵税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">13</Data></Cell>
+    <Cell ss:Index="19" ss:StyleID="s62"><Data ss:Type="String">1、第一期填0；&#13;&#13;2、第二期以后填上期第20栏“期末留抵税额”“一般项目”列“本月数”</Data></Cell>
+    <Cell ss:Index="26" ss:StyleID="s62"><Data ss:Type="String">1、第一期填第20栏“期末留抵税额”“一般货物、劳务和应税服务”列“本月数”；&#13;&#13;2、第二期以后填上期第20栏“期末留抵税额”“一般项目”列“本年累计”</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">进项税额转出</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">14</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">免、抵、退应退税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">15</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">按适用税率计算的纳税检查应补缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">16</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">应抵扣税额合计</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">17=12+13-14-15+16</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">实际抵扣税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">18（如17&lt;11，则为17，否则为11）</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">应纳税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">19=11-18</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">期末留抵税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">20=17-18</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">简易计税办法计算的应纳税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">21</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">按简易计税办法计算的纳税检查应补缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">22</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">应纳税额减征额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">23</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">应纳税额合计</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">24=19+21-23</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">税款缴纳</Data></Cell>
+    <Cell><Data ss:Type="String">期初未缴税额（多缴为负数）</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">25</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">实收出口开具专用缴款书退税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">26</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">本期已缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">27=28+29+30+31</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">①分次预缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">28</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">②出口开具专用缴款书预缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">29</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">③本期缴纳上期应纳税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">30</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">④本期缴纳欠缴税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">31</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">期末未缴税额（多缴为负数）</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">32=24+25+26-27</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">其中：欠缴税额（≥0）</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">33=25+26-27</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">本期应补(退)税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">34＝24-28-29</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">即征即退实际退税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">35</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="26"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">期初未缴查补税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">36</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">本期入库查补税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="Number">37</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">期末未缴查补税额</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">38=16+22+36-37</Data></Cell>
+    <Cell ss:Index="32"><Data ss:Type="String">——</Data></Cell>
+    <Cell ss:Index="36"><Data ss:Type="String">——</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">授权声明</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">      如果你已委托代理人申报，请填写下列资料：</Data></Cell>
+    <Cell ss:Index="22"><Data ss:Type="String">申报人声明</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="3"><Data ss:Type="String">      为代理一切税务事宜，现授权                                                                </Data></Cell>
+    <Cell ss:Index="24"><Data ss:Type="String">    本纳税申报表是根据国家税收法律法规及相关规定填报的，我确定它是真实的、可靠的、完整的。</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="3"><Data ss:Type="String">（地址）                                             为本纳税人的代理申报人，任何与本</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="3"><Data ss:Type="String">申报表有关的往来文件，都可寄予此人。</Data></Cell>
+   </Row>
+   <Row ss:Index="53">
+    <Cell ss:Index="3"><Data ss:Type="String">                                                                                授权人签字：</Data></Cell>
+    <Cell ss:Index="24"><Data ss:Type="String">                                                                           声明人签字：</Data></Cell>
+   </Row>
+   <Row ss:Index="55">
+    <Cell><Data ss:Type="String">主管税务机关：</Data></Cell>
+    <Cell ss:Index="19"><Data ss:Type="String">接收人：</Data></Cell>
+    <Cell ss:Index="29"><Data ss:Type="String">      接收日期：</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <PageLayoutZoom>0</PageLayoutZoom>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>4</ActiveRow>
+     <ActiveCol>8</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet3">
+  <Table ss:ExpandedColumnCount="1" ss:ExpandedRowCount="1" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="45" ss:DefaultRowHeight="14">
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <PageLayoutZoom>0</PageLayoutZoom>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

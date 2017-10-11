@@ -30,9 +30,11 @@ public class DateUtil {
 	//一天时间得毫秒数
 	public static final Long DATE_DAY_MILLISECOND = 24*60*60*1000*DATE_DAY_LONG;
 	private static String defaultDatePattern = "yyyy-MM-dd HH:mm:ss";
+	
 	private static String defaultDatePattern1 = "yyyy-MM-dd";
 	private static String defaultDatePattern2 = "yyyyMMdd";
 	private static String defaultDatePattern3 = "yyyy年MM月dd日";
+	public static String defaultDatePattern4 = "yyyy_MM_dd_HHmmss";
 
 	
 	/**
